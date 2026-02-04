@@ -1,0 +1,2237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>So You Want to Be a Video Essayist</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Source+Sans+3:wght@300;400;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root{--bg-primary:#0a0a0f;--bg-secondary:#12121a;--bg-tertiary:#1a1a25;--text-primary:#e8e6e3;--text-secondary:#9d9b97;--accent-gold:#c9a227;--accent-red:#a13d3d;--accent-blue:#3d6ba1;--accent-green:#4a7c59;--accent-purple:#6b4a8c;--border-subtle:rgba(201,162,39,0.2)}
+        *{margin:0;padding:0;box-sizing:border-box}
+        body{font-family:'Source Sans 3',sans-serif;background:var(--bg-primary);color:var(--text-primary);min-height:100vh;line-height:1.7}
+        .container{max-width:900px;margin:0 auto;padding:2rem}
+        #title-screen{min-height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;animation:fadeIn 1s ease-out}
+        @keyframes fadeIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+        .title-decoration{width:120px;height:2px;background:linear-gradient(90deg,transparent,var(--accent-gold),transparent);margin:1.5rem auto}
+        h1{font-family:'Playfair Display',serif;font-size:clamp(2rem,5vw,3.5rem);font-weight:900;margin-bottom:0.5rem;background:linear-gradient(135deg,var(--text-primary) 0%,var(--accent-gold) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+        .subtitle{font-family:'JetBrains Mono',monospace;font-size:0.85rem;color:var(--text-secondary);text-transform:uppercase;letter-spacing:0.3em;margin-bottom:1.5rem}
+        .intro-text{max-width:600px;margin:0 auto 1.25rem;color:var(--text-secondary);font-size:1rem}
+        .intro-text em{color:var(--accent-gold);font-style:normal}
+        .goal-box{background:var(--bg-secondary);border:1px solid var(--accent-gold);padding:1.25rem 1.5rem;margin:1.25rem auto;max-width:540px;border-radius:4px}
+        .goal-box h3{font-family:'JetBrains Mono',monospace;font-size:0.7rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--accent-gold);margin-bottom:0.4rem}
+        .ecosystems-box{background:var(--bg-tertiary);border:1px solid var(--border-subtle);padding:1rem 1.25rem;margin:1.25rem auto;max-width:600px;border-radius:4px;text-align:left}
+        .ecosystems-box h4{font-family:'JetBrains Mono',monospace;font-size:0.65rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--text-secondary);margin-bottom:0.6rem}
+        .ecosystem-item{display:flex;align-items:center;margin-bottom:0.4rem;font-size:0.9rem}
+        .ecosystem-dot{width:8px;height:8px;border-radius:50%;margin-right:0.6rem}
+        .ecosystem-dot.youtube{background:var(--accent-red)}
+        .ecosystem-dot.academic{background:var(--accent-purple)}
+        .ecosystem-dot.festival{background:var(--accent-blue)}
+        .btn{font-family:'Source Sans 3',sans-serif;font-size:1rem;font-weight:600;padding:0.9rem 2rem;border:1px solid var(--accent-gold);background:transparent;color:var(--accent-gold);cursor:pointer;transition:all 0.3s ease;text-transform:uppercase;letter-spacing:0.1em;position:relative;overflow:hidden;margin-top:1rem}
+        .btn::before{content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;background:var(--accent-gold);transition:left 0.3s ease;z-index:-1}
+        .btn:hover{color:var(--bg-primary)}
+        .btn:hover::before{left:0}
+        #game-screen,#gameover-screen,#victory-screen{display:none;min-height:100vh;padding:1.5rem 0}
+        .stats-bar{display:grid;grid-template-columns:repeat(4,1fr);gap:0.5rem;margin-bottom:0.75rem;padding:0.9rem;background:var(--bg-secondary);border:1px solid var(--border-subtle);border-radius:4px}
+        .stat{text-align:center}
+        .stat-label{font-family:'JetBrains Mono',monospace;font-size:0.5rem;text-transform:uppercase;letter-spacing:0.06em;color:var(--text-secondary);margin-bottom:0.2rem}
+        .stat-value{font-family:'Playfair Display',serif;font-size:1rem;font-weight:700}
+        .stat-context{font-family:'JetBrains Mono',monospace;font-size:0.45rem;color:var(--text-secondary);margin-top:0.1rem}
+        .stat-value.audience{color:var(--accent-red)}
+        .stat-value.money{color:var(--accent-green)}
+        .stat-value.reputation{color:var(--accent-gold)}
+        .stat-value.wellbeing{color:var(--accent-blue)}
+        .stat-bar-container{width:100%;height:3px;background:var(--bg-tertiary);border-radius:2px;margin-top:0.25rem;overflow:hidden}
+        .stat-bar{height:100%;border-radius:2px;transition:width 0.5s ease}
+        .stat-bar.audience{background:var(--accent-red)}
+        .stat-bar.money{background:var(--accent-green)}
+        .stat-bar.reputation{background:var(--accent-gold)}
+        .stat-bar.wellbeing{background:var(--accent-blue)}
+        .stat.danger .stat-value{animation:pulse 1s infinite}
+        @keyframes pulse{0%,100%{opacity:1}50%{opacity:0.5}}
+        .year-progress{display:flex;align-items:center;justify-content:center;gap:0.35rem;padding:0.7rem;background:var(--bg-secondary);border:1px solid var(--border-subtle);border-radius:4px;margin-bottom:1rem}
+        .year-dot{width:20px;height:20px;border-radius:50%;background:var(--bg-tertiary);border:2px solid var(--border-subtle);display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:0.6rem;color:var(--text-secondary);transition:all 0.3s ease}
+        .year-dot.completed{background:var(--accent-green);border-color:var(--accent-green);color:var(--bg-primary)}
+        .year-dot.current{background:var(--accent-gold);border-color:var(--accent-gold);color:var(--bg-primary);box-shadow:0 0 10px rgba(201,162,39,0.4)}
+        .year-connector{width:20px;height:2px;background:var(--border-subtle)}
+        .year-connector.completed{background:var(--accent-green)}
+        .year-label{font-family:'JetBrains Mono',monospace;font-size:0.6rem;color:var(--text-secondary);text-transform:uppercase;letter-spacing:0.1em;margin-left:0.6rem}
+        .scene-visual{width:100%;height:120px;margin-bottom:1rem;border-radius:4px;overflow:hidden;position:relative}
+        .scene-visual canvas{width:100%;height:100%}
+        .scene-card{background:var(--bg-secondary);border:1px solid var(--border-subtle);border-radius:4px;padding:1.5rem;margin-bottom:1rem;position:relative}
+        .scene-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--accent-gold),transparent)}
+        .scene-card.youtube::before{background:linear-gradient(90deg,var(--accent-red),transparent)}
+        .scene-card.academic::before{background:linear-gradient(90deg,var(--accent-purple),transparent)}
+        .scene-card.festival::before{background:linear-gradient(90deg,var(--accent-blue),transparent)}
+        .scene-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:0.6rem}
+        .scene-type{font-family:'JetBrains Mono',monospace;font-size:0.6rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--accent-gold)}
+        .path-badge{font-family:'JetBrains Mono',monospace;font-size:0.55rem;text-transform:uppercase;letter-spacing:0.06em;padding:0.15rem 0.4rem;border-radius:2px}
+        .path-badge.youtube{background:rgba(161,61,61,0.3);color:#d47777}
+        .path-badge.academic{background:rgba(107,74,140,0.3);color:#a586c7}
+        .path-badge.festival{background:rgba(61,107,161,0.3);color:#77a8d4}
+        .scene-title{font-family:'Playfair Display',serif;font-size:1.3rem;font-weight:700;margin-bottom:0.9rem;line-height:1.3}
+        .scene-text{color:var(--text-secondary);margin-bottom:1.1rem;font-size:0.92rem}
+        .scene-text strong{color:var(--text-primary)}
+        blockquote{border-left:3px solid var(--accent-gold);padding-left:0.9rem;margin:0.9rem 0;font-style:italic;color:var(--text-primary);font-size:0.88rem}
+        blockquote cite{display:block;margin-top:0.25rem;font-size:0.75rem;color:var(--text-secondary);font-style:normal}
+        .choices{display:flex;flex-direction:column;gap:0.5rem}
+        .choice-btn{font-family:'Source Sans 3',sans-serif;font-size:0.88rem;padding:0.9rem;border:1px solid var(--border-subtle);background:var(--bg-tertiary);color:var(--text-primary);cursor:pointer;transition:all 0.3s ease;text-align:left;position:relative}
+        .choice-btn::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--accent-gold);transform:scaleY(0);transition:transform 0.3s ease}
+        .choice-btn:hover{background:rgba(201,162,39,0.1);border-color:var(--accent-gold);padding-left:1.3rem}
+        .choice-btn:hover::before{transform:scaleY(1)}
+        .choice-btn.crossover{border-style:dashed}
+        .choice-label{font-weight:600;display:block;margin-bottom:0.1rem}
+        .choice-desc{font-size:0.78rem;color:var(--text-secondary)}
+        .choice-tag{display:inline-block;font-family:'JetBrains Mono',monospace;font-size:0.5rem;padding:0.1rem 0.3rem;border-radius:2px;margin-left:0.4rem;background:rgba(201,162,39,0.2);color:var(--accent-gold)}
+        .outcome-toast{position:fixed;bottom:1.25rem;left:50%;transform:translateX(-50%) translateY(100px);background:var(--bg-secondary);border:1px solid var(--border-subtle);border-radius:4px;padding:0.7rem 1rem;z-index:100;opacity:0;transition:all 0.4s ease}
+        .outcome-toast.show{transform:translateX(-50%) translateY(0);opacity:1}
+        .outcome-toast.positive{border-left:3px solid var(--accent-green)}
+        .outcome-toast.negative{border-left:3px solid var(--accent-red)}
+        .stat-change{display:inline-block;font-family:'JetBrains Mono',monospace;font-size:0.65rem;padding:0.1rem 0.3rem;border-radius:2px;margin-right:0.25rem}
+        .stat-change.positive{background:rgba(74,124,89,0.3);color:#7cb891}
+        .stat-change.negative{background:rgba(161,61,61,0.3);color:#d47777}
+        .result-card{background:var(--bg-secondary);border-radius:4px;padding:1.75rem;text-align:center;margin-bottom:1.25rem}
+        .result-card.victory{border:1px solid var(--accent-gold)}
+        .result-card.gameover{border:2px solid var(--accent-red)}
+        .result-type{font-family:'JetBrains Mono',monospace;font-size:0.65rem;text-transform:uppercase;letter-spacing:0.2em;margin-bottom:0.4rem}
+        .result-type.victory{color:var(--accent-gold)}
+        .result-type.gameover{color:var(--accent-red)}
+        .result-title{font-family:'Playfair Display',serif;font-size:1.6rem;font-weight:900;margin-bottom:0.9rem}
+        .result-title.gameover{color:var(--accent-red)}
+        .result-desc{color:var(--text-secondary);font-size:0.95rem;max-width:500px;margin:0 auto 1.25rem}
+        .final-scores{background:var(--bg-tertiary);border-radius:4px;padding:1.25rem;margin:1.25rem auto;max-width:560px;text-align:left}
+        .final-scores-title{font-family:'JetBrains Mono',monospace;font-size:0.6rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--accent-gold);margin-bottom:0.9rem;text-align:center}
+        .score-row{display:flex;align-items:center;padding:0.65rem 0;border-bottom:1px solid var(--border-subtle)}
+        .score-row:last-child{border-bottom:none}
+        .score-icon{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.9rem;margin-right:0.7rem;flex-shrink:0}
+        .score-icon.audience{background:rgba(161,61,61,0.2)}
+        .score-icon.money{background:rgba(74,124,89,0.2)}
+        .score-icon.reputation{background:rgba(201,162,39,0.2)}
+        .score-icon.wellbeing{background:rgba(61,107,161,0.2)}
+        .score-details{flex-grow:1}
+        .score-header{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:0.25rem}
+        .score-name{font-weight:600;font-size:0.85rem}
+        .score-value{font-family:'Playfair Display',serif;font-size:1rem;font-weight:700}
+        .score-value.audience{color:var(--accent-red)}
+        .score-value.money{color:var(--accent-green)}
+        .score-value.reputation{color:var(--accent-gold)}
+        .score-value.wellbeing{color:var(--accent-blue)}
+        .score-context{font-size:0.7rem;color:var(--text-secondary);margin-bottom:0.35rem}
+        .score-bar{width:100%;height:5px;background:var(--bg-primary);border-radius:3px;overflow:hidden}
+        .score-fill{height:100%;border-radius:3px;transition:width 1s ease}
+        .score-fill.audience{background:linear-gradient(90deg,var(--accent-red),#d47777)}
+        .score-fill.money{background:linear-gradient(90deg,var(--accent-green),#7cb891)}
+        .score-fill.reputation{background:linear-gradient(90deg,var(--accent-gold),#e8c84a)}
+        .score-fill.wellbeing{background:linear-gradient(90deg,var(--accent-blue),#77a8d4)}
+        .final-grade{text-align:center;margin-top:1rem;padding-top:0.9rem;border-top:1px solid var(--border-subtle)}
+        .grade-label{font-family:'JetBrains Mono',monospace;font-size:0.55rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--text-secondary);margin-bottom:0.25rem}
+        .grade-value{font-family:'Playfair Display',serif;font-size:1.8rem;font-weight:900;color:var(--accent-gold)}
+        .grade-desc{font-size:0.75rem;color:var(--text-secondary);margin-top:0.15rem}
+        .glitch-overlay{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:999;opacity:0;background:repeating-linear-gradient(0deg,rgba(0,0,0,0.1),rgba(0,0,0,0.1) 1px,transparent 1px,transparent 2px)}
+        .glitch-overlay.active{animation:glitch 0.3s ease}
+        @keyframes glitch{0%,100%{opacity:0}10%,90%{opacity:0.8}20%,80%{opacity:0.2;transform:translateX(-2px)}30%,70%{opacity:0.6;transform:translateX(2px)}50%{opacity:1;transform:translateX(0)}}
+        @media(max-width:600px){.stats-bar{grid-template-columns:repeat(2,1fr)}.scene-card,.result-card{padding:1.1rem}h1{font-size:1.5rem}.year-connector{width:10px}.scene-visual{height:80px}}
+    </style>
+</head>
+<body>
+    <div class="glitch-overlay" id="glitch"></div>
+    <div class="container">
+        <div id="title-screen">
+            <div class="title-decoration"></div>
+            <h1>So You Want to Be<br>a Video Essayist</h1>
+            <p class="subtitle">A Five-Year Journey</p>
+            <p class="intro-text">The video essay form still escapes definition, and is no longer new or "the next big thing"—but the number and diversity of stakeholders continues to grow: <em>creators, critics, scholars, curators, programmers, fans</em>.</p>
+            <div class="ecosystems-box">
+                <h4>Three Major Ecosystems</h4>
+                <div class="ecosystem-item"><div class="ecosystem-dot youtube"></div><span><strong>Social Media & YouTube</strong> — algorithmic reach, volatile income</span></div>
+                <div class="ecosystem-item"><div class="ecosystem-dot academic"></div><span><strong>Academia & Criticism</strong> — peer review, slow prestige</span></div>
+                <div class="ecosystem-item"><div class="ecosystem-dot festival"></div><span><strong>Festivals & Galleries</strong> — artistic credibility, financial precarity</span></div>
+            </div>
+            <div class="goal-box">
+                <h3>🎯 Your Goal</h3>
+                <p>Survive <strong>five years</strong> as a video essayist. Navigate precarious creator economics. Balance audience, finances, reputation, and wellbeing. Most who try this path fail. Will you?</p>
+            </div>
+            <button class="btn" onclick="startGame()">Begin Your Journey</button>
+            <p class="intro-text" style="font-size:0.75rem;margin-top:1.5rem;opacity:0.7">Inspired by the <em>Sight & Sound Video Essay Poll</em></p>
+        </div>
+        <div id="game-screen">
+            <div class="stats-bar">
+                <div class="stat" id="stat-box-audience"><div class="stat-label">Audience</div><div class="stat-value audience" id="stat-audience">0</div><div class="stat-context">of 100K goal</div><div class="stat-bar-container"><div class="stat-bar audience" id="bar-audience"></div></div></div>
+                <div class="stat" id="stat-box-money"><div class="stat-label">Savings</div><div class="stat-value money" id="stat-money">$5,000</div><div class="stat-context">fail at -$8K</div><div class="stat-bar-container"><div class="stat-bar money" id="bar-money"></div></div></div>
+                <div class="stat" id="stat-box-reputation"><div class="stat-label">Reputation</div><div class="stat-value reputation" id="stat-reputation">10</div><div class="stat-context">0-100 scale</div><div class="stat-bar-container"><div class="stat-bar reputation" id="bar-reputation"></div></div></div>
+                <div class="stat" id="stat-box-wellbeing"><div class="stat-label">Wellbeing</div><div class="stat-value wellbeing" id="stat-wellbeing">70</div><div class="stat-context">fail at ≤10</div><div class="stat-bar-container"><div class="stat-bar wellbeing" id="bar-wellbeing"></div></div></div>
+            </div>
+            <div class="year-progress">
+                <div class="year-dot" id="y1">1</div><div class="year-connector" id="c1"></div>
+                <div class="year-dot" id="y2">2</div><div class="year-connector" id="c2"></div>
+                <div class="year-dot" id="y3">3</div><div class="year-connector" id="c3"></div>
+                <div class="year-dot" id="y4">4</div><div class="year-connector" id="c4"></div>
+                <div class="year-dot" id="y5">5</div>
+                <span class="year-label">Year <span id="current-year">1</span> of 5</span>
+            </div>
+            <div id="scene-container"></div>
+        </div>
+        <div id="gameover-screen"><div id="gameover-container"></div></div>
+        <div id="victory-screen"><div id="victory-container"></div></div>
+        <div class="outcome-toast" id="outcome-toast"></div>
+    </div>
+<script>
+let state={year:1,audience:0,money:5000,reputation:10,wellbeing:70,path:null,history:[]};
+const FAIL={money:-8000,wellbeing:10,reputation:0};
+
+// Visual generator
+function drawMoodCanvas(container,mood){
+    const canvas=document.createElement('canvas');
+    canvas.width=800;canvas.height=120;
+    const ctx=canvas.getContext('2d');
+    const colors={
+        hopeful:['#1a1a25','#2a3a2a','#c9a227'],
+        tense:['#1a1a25','#3a2a2a','#a13d3d'],
+        calm:['#1a1a25','#2a2a3a','#3d6ba1'],
+        dark:['#0a0a0f','#1a1a25','#2a2a2a'],
+        triumphant:['#1a1a25','#3a3a2a','#c9a227','#4a7c59']
+    };
+    const palette=colors[mood]||colors.calm;
+    // Draw abstract shapes
+    for(let i=0;i<15;i++){
+        ctx.beginPath();
+        ctx.fillStyle=palette[Math.floor(Math.random()*palette.length)];
+        ctx.globalAlpha=0.1+Math.random()*0.3;
+        const x=Math.random()*800;
+        const y=Math.random()*120;
+        const w=50+Math.random()*200;
+        const h=20+Math.random()*60;
+        ctx.fillRect(x,y,w,h);
+    }
+    // Add scan lines
+    ctx.globalAlpha=0.05;
+    ctx.fillStyle='#fff';
+    for(let y=0;y<120;y+=2){
+        ctx.fillRect(0,y,800,1);
+    }
+    container.innerHTML='';
+    container.appendChild(canvas);
+}
+
+function triggerGlitch(){
+    const el=document.getElementById('glitch');
+    el.classList.add('active');
+    setTimeout(()=>el.classList.remove('active'),300);
+}
+
+const scenes={
+// ============ YEAR 1: ORIGINS ============
+start:{year:1,type:"Year One · The Beginning",title:"The First Upload",mood:"hopeful",
+text:`You've finished your first video essay. Three weeks of research, editing, re-recording voiceover until 3 AM. Your cursor hovers over the upload button.
+
+<blockquote>"We naturally gravitate towards what is closest: an essay encountered at a workshop, one tied to a project we follow, or one that surfaces in our personalised feeds."<cite>— Sight & Sound</cite></blockquote>
+
+<strong>Where do you release it?</strong>`,
+choices:[
+{label:"YouTube",desc:"The algorithmic colosseum. Massive potential reach, but you'll play by their rules.",next:"y1_youtube",effects:{audience:500,money:-800,reputation:5,wellbeing:-5}},
+{label:"Academic Journal + Vimeo",desc:"Peer review, intellectual credibility. Low view numbers even for successes.",next:"y1_academic",effects:{audience:80,money:-1500,reputation:15,wellbeing:-3}},
+{label:"Film Festival Submission",desc:"Cinemas and galleries. Expensive entry fees, competitive, often kept offline.",next:"y1_festival",effects:{audience:30,money:-2500,reputation:18,wellbeing:-10}}
+]},
+
+y1_youtube:{year:1,type:"YouTube · Year One",title:"The Algorithm Awaits",pathSet:"youtube",mood:"tense",
+text:`Your video gets 1,247 views in the first month. The algorithm is indifferent. One comment: "more like this please." Another: "this is way too long lol."
+
+<strong>AdSense revenue: $4.12</strong>
+
+The bills don't stop. What's your strategy?`,
+choices:[
+{label:"Go Long: Create a 2-Hour Deep Dive",desc:"Feature-length essays can break through—but take months and drain savings.",next:"y1_yt_long",effects:{audience:2500,money:-4000,reputation:15,wellbeing:-30}},
+{label:"Play the Algorithm: Weekly Uploads",desc:"Chase trending topics. Consistent output builds momentum—and exhaustion.",next:"y1_yt_grind",effects:{audience:3500,money:200,reputation:5,wellbeing:-25}},
+{label:"Carve a Niche: Underexplored Cinema",desc:"Less competition, passionate audience. Slower growth.",next:"y1_yt_niche",effects:{audience:1500,money:-800,reputation:12,wellbeing:0}}
+]},
+
+y1_yt_long:{year:1,type:"YouTube · Year One",title:"The Feature-Length Gamble",mood:"dark",
+text:`Six months in the editing cave. Your video on found footage horror sits at 1 hour 52 minutes. Sleep schedule: destroyed. Social life: nonexistent.
+
+The premiere: <strong>78,000 views in the first week.</strong> A larger channel shares it. Comments flood in. You feel... nothing. Just exhaustion.
+
+Your savings are nearly gone. Your body is screaming for rest.`,
+choices:[
+{label:"Strike While Hot: Announce Part 2",desc:"The audience expects more. Capitalize on momentum now.",next:"y2_yt_burnout_path",effects:{audience:12000,money:2000,reputation:20,wellbeing:-35}},
+{label:"Take a Break: Your Health Matters",desc:"Step back. Let the video work for you while you recover.",next:"y2_yt_recovery",effects:{audience:3000,money:-2000,reputation:8,wellbeing:30}}
+]},
+
+y1_yt_grind:{year:1,type:"YouTube · Year One",title:"The Weekly Hustle",mood:"tense",
+text:`You've uploaded 38 videos in 10 months. Your workflow is efficient—almost mechanical. 
+
+<strong>Subscriber count: 5,800. AdSense revenue: $112/month.</strong>
+
+Not even close to rent. A brand reaches out—they want you to promote a mobile game that has nothing to do with film. $600 for one mention.`,
+choices:[
+{label:"Take the Sponsorship",desc:"It's not ideal, but rent is due.",next:"y2_yt_sellout",effects:{audience:-500,money:600,reputation:-10,wellbeing:-5}},
+{label:"Launch a Patreon Instead",desc:"Ask your audience directly. Build community, not just viewership.",next:"y2_yt_patreon",effects:{audience:800,money:400,reputation:8,wellbeing:5}},
+{label:"Get a Day Job",desc:"This isn't sustainable alone. Supplement with stable income.",next:"y2_yt_dayjob",effects:{audience:200,money:4000,reputation:2,wellbeing:20}},
+{label:"Forget This—Try Academia",desc:"Maybe the scholarly path suits you better.",next:"y1_academic",effects:{audience:-3000,money:-1000,reputation:5,wellbeing:-10},tag:"SWITCH PATH"}
+]},
+
+y1_yt_niche:{year:1,type:"YouTube · Year One",title:"The Quiet Corner",mood:"calm",
+text:`Your series on Czech New Wave has found its people. 3,200 subscribers—devoted ones. Comments in multiple languages. Someone mentioned you in their thesis.
+
+The views are modest. The algorithm doesn't understand you. But there's something real here.
+
+A film journal wants you to write an article about Věra Chytilová.`,
+choices:[
+{label:"Write the Article, Bridge Worlds",desc:"Cross-pollinate YouTube and academia. Takes time from videos.",next:"y2_yt_crossover",effects:{audience:1000,money:300,reputation:22,wellbeing:-8}},
+{label:"Stay Focused on YouTube",desc:"Double down on what's working. More videos, same niche.",next:"y2_yt_dedicated",effects:{audience:3000,money:-500,reputation:10,wellbeing:5}},
+{label:"This Is Too Slow—Chase Trends",desc:"Maybe you need to be more commercial to survive.",next:"y1_yt_grind",effects:{audience:1500,money:0,reputation:-5,wellbeing:-15}}
+]},
+
+y1_academic:{year:1,type:"Academic · Year One",title:"Peer Review Purgatory",pathSet:"academic",mood:"calm",
+text:`Four months later, the email arrives. Your video essay has been accepted for [in]Transition. Two peer reviewers provided detailed feedback. One called it "methodologically innovative." The other questioned your citational practices.
+
+<strong>View count on Vimeo: 342.</strong>
+
+But your name is now in academic databases. Your CV has a new line.`,
+choices:[
+{label:"Apply for Research Funding",desc:"Grants could support a larger project. The application process is grueling.",next:"y2_ac_grant",effects:{audience:150,money:-1000,reputation:20,wellbeing:-18}},
+{label:"Organize a Workshop",desc:"Bring together videographic scholars. Build community, share methods.",next:"y2_ac_workshop",effects:{audience:300,money:-2500,reputation:28,wellbeing:0}},
+{label:"Experiment Radically with Form",desc:"Push boundaries of what academic video essays can be.",next:"y2_ac_experimental",effects:{audience:200,money:-1200,reputation:15,wellbeing:10}},
+{label:"This Is Too Slow—Try YouTube",desc:"Maybe you need a bigger audience to matter.",next:"y1_youtube",effects:{audience:200,money:-500,reputation:-8,wellbeing:-10},tag:"SWITCH PATH"}
+]},
+
+y1_festival:{year:1,type:"Festival · Year One",title:"The Premiere",pathSet:"festival",mood:"hopeful",
+text:`Against the odds, your 22-minute essay film screens at a small festival's experimental section. You sit in the dark, watching strangers watch your work.
+
+The Q&A is terrifying and exhilarating. A curator approaches afterward with her card.
+
+<strong>Your bank account: $1,800 remaining.</strong>`,
+choices:[
+{label:"Chase the Festival Circuit",desc:"Submit to Rotterdam, CPH:DOX, Visions du Réel. Prestigious but expensive.",next:"y2_fest_circuit",effects:{audience:250,money:-4500,reputation:30,wellbeing:-28}},
+{label:"Seek Production Funding",desc:"Your next project could be bigger. Apply to film funds.",next:"y2_fest_funding",effects:{audience:100,money:-1500,reputation:22,wellbeing:-12}},
+{label:"Upload Online, Expand Reach",desc:"The festival window closes. Let the world see it now.",next:"y2_fest_online",effects:{audience:2000,money:-200,reputation:12,wellbeing:8}},
+{label:"This Is Too Expensive—Try YouTube",desc:"Maybe you can't afford the festival world.",next:"y1_youtube",effects:{audience:500,money:0,reputation:-5,wellbeing:0},tag:"SWITCH PATH"}
+]},
+
+// ============ YEAR 2: THE GRIND ============
+y2_yt_burnout_path:{year:2,type:"YouTube · Year Two",title:"The Momentum Trap",mood:"dark",
+text:`You announced Part 2. The comments exploded with excitement. You've set expectations you're not sure you can meet.
+
+Three months in, you're behind schedule. The footage isn't coming together. You haven't seen friends in weeks. Your eye has started twitching.
+
+<strong>A strange email arrives: someone is claiming your video uses their footage without permission.</strong>`,
+choices:[
+{label:"Push Through and Ignore the Claim",desc:"It's probably nothing. Focus on Part 2.",next:"y2_yt_copyright_strike",effects:{audience:5000,money:-500,reputation:10,wellbeing:-25}},
+{label:"Stop Everything and Address the Claim",desc:"This could be serious. Lawyer consultation: $800.",next:"y2_yt_legal_fight",effects:{audience:-2000,money:-2500,reputation:5,wellbeing:-15}},
+{label:"Post a Health Update, Delay Part 2",desc:"Be honest with your audience about struggling.",next:"y2_yt_honest_delay",effects:{audience:-1000,money:-800,reputation:15,wellbeing:20}}
+]},
+
+y2_yt_copyright_strike:{year:2,type:"YouTube · Year Two",title:"The Strike",mood:"dark",
+text:`The copyright claim was real. Your channel receives a strike. The original video is taken down—78,000 views, gone.
+
+<strong>Your audience is confused. Some think you're a thief.</strong>
+
+The claimant wants $5,000 to settle. You don't have it.`,
+choices:[
+{label:"Borrow Money to Settle",desc:"Go into debt to make this go away.",next:"y3_yt_debt_recovery",effects:{audience:-5000,money:-5000,reputation:-15,wellbeing:-20}},
+{label:"Fight It Publicly",desc:"Make a video explaining your side. Risk escalation.",next:"gameover_legal",effects:{audience:2000,money:-3000,reputation:-25,wellbeing:-30}},
+{label:"Abandon the Channel, Start Fresh",desc:"New name, new beginning. Lose everything you built.",next:"y2_yt_fresh_start",effects:{audience:-15000,money:-1000,reputation:-20,wellbeing:10}}
+]},
+
+y2_yt_legal_fight:{year:2,type:"YouTube · Year Two",title:"The Legal Limbo",mood:"tense",
+text:`The lawyer says it's a gray area. Fair use might protect you, but fighting it could cost $10,000+. The claimant is a small production company that's done this before—they target video essayists.
+
+<strong>You're not sleeping well.</strong>`,
+choices:[
+{label:"Negotiate a Settlement",desc:"Offer $1,500 to make it go away.",next:"y3_yt_settled",effects:{audience:0,money:-1500,reputation:0,wellbeing:10}},
+{label:"Remove the Disputed Footage",desc:"Re-edit the video. Lose the best 8 minutes.",next:"y3_yt_compromised",effects:{audience:-3000,money:-500,reputation:-5,wellbeing:5}},
+{label:"Fight in Court",desc:"Stand on principle. This could take years.",next:"gameover_legal",effects:{audience:0,money:-8000,reputation:10,wellbeing:-40}}
+]},
+
+y2_yt_honest_delay:{year:2,type:"YouTube · Year Two",title:"The Vulnerable Video",mood:"calm",
+text:`Your "I Need to Be Honest" video gets 95,000 views. The comments are overwhelmingly supportive.
+
+"Take care of yourself." "We'll be here when you're ready." "This is why I support you on Patreon."
+
+<strong>Some subscribers left. The ones who stayed became more invested.</strong>
+
+You take two months off. When you return, you feel different.`,
+choices:[
+{label:"Return with a Smaller Project",desc:"Something manageable. 20 minutes, not 2 hours.",next:"y3_yt_sustainable",effects:{audience:5000,money:1500,reputation:18,wellbeing:25}},
+{label:"Return with Part 2 (Scaled Back)",desc:"Deliver what you promised, but smarter.",next:"y3_yt_delivered",effects:{audience:15000,money:3000,reputation:25,wellbeing:10}},
+{label:"Pivot to Teaching",desc:"Share what you've learned. Course creation.",next:"y3_yt_teaching",effects:{audience:2000,money:4000,reputation:20,wellbeing:20}}
+]},
+
+y2_yt_recovery:{year:2,type:"YouTube · Year Two",title:"The Slow Rebuild",mood:"calm",
+text:`Three months off. Your video kept accumulating views—now at 180,000. You feel human again.
+
+You've learned something: the grind isn't sustainable. But you still love the craft.
+
+<strong>Your savings are dangerously low: $1,200.</strong>`,
+choices:[
+{label:"Return with Boundaries",desc:"One substantial video every 2-3 months. Quality over quantity.",next:"y3_yt_sustainable",effects:{audience:4000,money:800,reputation:15,wellbeing:20}},
+{label:"Get a Part-Time Job",desc:"Stability first. Videos on the side.",next:"y3_yt_parttime",effects:{audience:1500,money:4500,reputation:8,wellbeing:25}},
+{label:"Apply for Artist Grants",desc:"Your feature-length work might qualify.",next:"y3_yt_grant_attempt",effects:{audience:1000,money:-500,reputation:12,wellbeing:5}}
+]},
+
+y2_yt_sellout:{year:2,type:"YouTube · Year Two",title:"The Compromise",mood:"tense",
+text:`The sponsorship money helped. But the comments noticed: "Didn't expect a mobile game ad in a Tarkovsky video." "Lost some respect tbh."
+
+You've crossed a line—not moral, but perceptual. Trust takes time to rebuild.
+
+<strong>More brands are reaching out now. They see you'll say yes.</strong>`,
+choices:[
+{label:"Take More Sponsorships",desc:"The money is real. Your principles are expensive.",next:"y3_yt_sellout_spiral",effects:{audience:-2000,money:3000,reputation:-18,wellbeing:-10}},
+{label:"Make a Video About Creator Economics",desc:"Be transparent about why you took the deal.",next:"y3_yt_transparent",effects:{audience:3000,money:400,reputation:15,wellbeing:10}},
+{label:"Reject All Future Sponsorships",desc:"Rebuild trust the hard way.",next:"y3_yt_pure",effects:{audience:1000,money:-1500,reputation:10,wellbeing:5}}
+]},
+
+y2_yt_patreon:{year:2,type:"YouTube · Year Two",title:"The Community Forms",mood:"hopeful",
+text:`142 patrons. $620/month. Not life-changing, but real.
+
+The Discord has 380 members discussing not just your videos, but film in general. You've accidentally built something.
+
+<strong>A patron sends a long message: they used your video in their film school thesis.</strong>`,
+choices:[
+{label:"Double Down on Community",desc:"More engagement, patron-exclusive content, monthly Q&As.",next:"y3_yt_community",effects:{audience:3000,money:1200,reputation:15,wellbeing:12}},
+{label:"Use Patreon for Ambitious Projects",desc:"Tell patrons their money funds production value directly.",next:"y3_yt_ambitious",effects:{audience:6000,money:500,reputation:22,wellbeing:-5}},
+{label:"Keep Things Simple",desc:"Maintain the current pace. Don't overcommit.",next:"y3_yt_steady",effects:{audience:2000,money:800,reputation:10,wellbeing:18}}
+]},
+
+y2_yt_dayjob:{year:2,type:"YouTube · Year Two",title:"The Double Life",mood:"calm",
+text:`You're working at a film archive. The paycheck is modest but steady. Videos come out monthly instead of weekly.
+
+<strong>Subscriber growth slowed dramatically. But you're not drowning.</strong>
+
+Your coworkers don't know about your channel. Your audience doesn't know about your job.`,
+choices:[
+{label:"Embrace the Hybrid Life",desc:"Day job + channel. Sustainable if not glamorous.",next:"y3_yt_hybrid",effects:{audience:1500,money:3500,reputation:8,wellbeing:22}},
+{label:"Use Archive Access for Content",desc:"Your job gives you access to rare footage.",next:"y3_yt_archive",effects:{audience:4000,money:2800,reputation:18,wellbeing:15}},
+{label:"Quit and Go Full-Time Creator",desc:"You've saved enough for six months. Take the leap.",next:"y3_yt_fulltime_leap",effects:{audience:3000,money:-3000,reputation:12,wellbeing:-15}}
+]},
+
+y2_yt_crossover:{year:2,type:"YouTube · Year Two",title:"The Bridge Builder",mood:"hopeful",
+text:`Your article was published. An academic cited your video in a peer-reviewed paper. A larger YouTuber mentioned your written work.
+
+<strong>You're becoming a connector between worlds that rarely speak.</strong>
+
+A university invites you to give a guest lecture. Unpaid, but prestigious.`,
+choices:[
+{label:"Give the Lecture, Seek Teaching Role",desc:"Maybe there's a path to stability here.",next:"y3_yt_academic_bridge",effects:{audience:2000,money:-500,reputation:28,wellbeing:-8}},
+{label:"Stay Independent",desc:"The freedom matters more than institutional validation.",next:"y3_yt_independent",effects:{audience:5000,money:600,reputation:18,wellbeing:15}},
+{label:"Lean Into Academia Full-Time",desc:"Apply to PhD programs.",next:"y3_ac_phd_path",effects:{audience:-1000,money:-2000,reputation:25,wellbeing:-5},tag:"SWITCH PATH"}
+]},
+
+y2_yt_dedicated:{year:2,type:"YouTube · Year Two",title:"The Niche Master",mood:"hopeful",
+text:`You're now THE channel for Central European cinema. 11,200 subscribers who trust your taste completely.
+
+<strong>Criterion Collection reached out about a potential collaboration.</strong>
+
+But the money still isn't there. $340/month from all sources combined.`,
+choices:[
+{label:"Accept Criterion Collaboration",desc:"Prestige, exposure, but they're not paying much.",next:"y3_yt_criterion",effects:{audience:15000,money:1500,reputation:35,wellbeing:5}},
+{label:"Negotiate for Real Payment",desc:"Your expertise is worth something. Push back.",next:"y3_yt_negotiate_criterion",effects:{audience:8000,money:4000,reputation:25,wellbeing:0}},
+{label:"Decline, Stay Independent",desc:"Keep your freedom. Build on your own terms.",next:"y3_yt_small_pure",effects:{audience:4000,money:200,reputation:20,wellbeing:15}}
+]},
+
+y2_yt_fresh_start:{year:2,type:"YouTube · Year Two",title:"Starting Over",mood:"dark",
+text:`New channel. New name. Zero subscribers.
+
+Everything you built is gone. But so is the legal threat.
+
+<strong>You're 28 years old, starting from scratch.</strong>`,
+choices:[
+{label:"Apply Everything You Learned",desc:"You know how to make videos now. Do it better.",next:"y3_yt_rebuild",effects:{audience:2000,money:-1000,reputation:5,wellbeing:10}},
+{label:"Try a Completely Different Approach",desc:"Maybe video essays weren't right for you.",next:"y3_yt_pivot",effects:{audience:3000,money:0,reputation:0,wellbeing:5}},
+{label:"Give Up on YouTube",desc:"Try the festival circuit instead.",next:"y2_fest_funding",effects:{audience:-2000,money:-1500,reputation:5,wellbeing:0},tag:"SWITCH PATH"}
+]},
+
+// Academic Year 2
+y2_ac_grant:{year:2,type:"Academic · Year Two",title:"The Funding Decision",mood:"hopeful",
+text:`Six months of proposal writing. Budget justifications. Ethics approvals. Reference letters.
+
+<strong>Result: €18,000 for a two-year project on archival film.</strong>
+
+You have resources now—and deliverables, deadlines, a committee expecting outcomes.`,
+choices:[
+{label:"Play It Safe: Deliver What Was Promised",desc:"Meet expectations. Build reputation as reliable scholar.",next:"y3_ac_safe",effects:{audience:300,money:5000,reputation:22,wellbeing:-8}},
+{label:"Take Risks: Bold Experimentation",desc:"This might be your only chance to do something truly new.",next:"y3_ac_bold",effects:{audience:600,money:4500,reputation:30,wellbeing:5}},
+{label:"Use Funding for a Hybrid Project",desc:"Make something that works both academically and publicly.",next:"y3_ac_hybrid_project",effects:{audience:1500,money:4000,reputation:25,wellbeing:0}}
+]},
+
+y2_ac_workshop:{year:2,type:"Academic · Year Two",title:"The Network Forms",mood:"hopeful",
+text:`Your workshop "Feminist Citational Practices in Videographic Criticism" attracted 28 participants from 9 countries. Collaborations spark.
+
+<strong>You've become a node in a network. But organizing takes time from your own work.</strong>
+
+A senior scholar suggests you apply for a lectureship at their university.`,
+choices:[
+{label:"Apply for the Position",desc:"Stability, legitimacy, but also bureaucracy.",next:"y3_ac_job_market",effects:{audience:400,money:500,reputation:30,wellbeing:-15}},
+{label:"Embrace the Curatorial Role",desc:"Your impact multiplies through others. Less personal output.",next:"y3_ac_curator",effects:{audience:500,money:800,reputation:35,wellbeing:5}},
+{label:"Return to Your Own Practice",desc:"The community inspired you. Time to make something new.",next:"y3_ac_practice",effects:{audience:400,money:-800,reputation:22,wellbeing:15}}
+]},
+
+y2_ac_experimental:{year:2,type:"Academic · Year Two",title:"The Boundary Case",mood:"tense",
+text:`Your new piece uses AI-generated imagery to interrogate the uncanny. It's 47 seconds long. Some colleagues are confused. Others call it "essential."
+
+<strong>A contemporary art journal wants to feature it. A film studies journal rejected it as "not sufficiently scholarly."</strong>
+
+The academy doesn't quite know what to do with you.`,
+choices:[
+{label:"Lean Into the Art World",desc:"Gallery shows, artist residencies, different prestige currency.",next:"y3_ac_artworld",effects:{audience:300,money:1500,reputation:25,wellbeing:12}},
+{label:"Fight for Academic Recognition",desc:"Push boundaries of what the field accepts as scholarship.",next:"y3_ac_fight",effects:{audience:250,money:-500,reputation:32,wellbeing:-10}},
+{label:"Try to Exist in Both",desc:"Split your practice between art and academy.",next:"y3_ac_split",effects:{audience:400,money:500,reputation:28,wellbeing:-5}}
+]},
+
+// Festival Year 2
+y2_fest_circuit:{year:2,type:"Festival · Year Two",title:"The Festival Life",mood:"tense",
+text:`Four festivals this year. Your film screened in three countries. A standing ovation in Rotterdam.
+
+<strong>Your bank account: -$1,200. Credit card maxed.</strong>
+
+You're sleeping on friends' couches in every city. The glamour is a lie.`,
+choices:[
+{label:"One More Festival Season",desc:"Berlinale accepted your new short. This could change everything.",next:"y3_fest_berlin",effects:{audience:400,money:-5000,reputation:35,wellbeing:-30}},
+{label:"Pause and Get Stable",desc:"Get a job. Any job. Make films on the side.",next:"y3_fest_stabilize",effects:{audience:200,money:5000,reputation:20,wellbeing:20}},
+{label:"Pivot to Online Distribution",desc:"Upload everything. Build an audience directly.",next:"y3_fest_online_pivot",effects:{audience:3000,money:-500,reputation:10,wellbeing:10},tag:"SHIFT STRATEGY"}
+]},
+
+y2_fest_funding:{year:2,type:"Festival · Year Two",title:"The Application Grind",mood:"tense",
+text:`Film funding is a language unto itself. Impact statements. Artistic visions. Diversity metrics.
+
+<strong>Five applications. Four rejections. One... still pending.</strong>
+
+The pending one is for €25,000. You'd have to move to another country for six months.`,
+choices:[
+{label:"Pray for the Big Grant",desc:"If it comes through, everything changes.",next:"y3_fest_grant_result",effects:{audience:100,money:-1000,reputation:18,wellbeing:-15}},
+{label:"Make Something with Nothing",desc:"Desktop documentary. No budget, infinite possibilities.",next:"y3_fest_desktop",effects:{audience:1200,money:-400,reputation:22,wellbeing:15}},
+{label:"Give Up on Film Funds",desc:"Crowdfund instead. Go directly to audiences.",next:"y3_fest_crowdfund",effects:{audience:2000,money:1000,reputation:12,wellbeing:5}}
+]},
+
+y2_fest_online:{year:2,type:"Festival · Year Two",title:"The Hybrid Approach",mood:"calm",
+text:`Your film found 15,000 viewers on Vimeo—modest by YouTube standards, significant for essay films.
+
+<strong>Festival prestige doesn't translate directly to online audience. But you're building in both worlds.</strong>
+
+A production company asks if you'd be interested in making branded content.`,
+choices:[
+{label:"Take the Branded Content Meeting",desc:"It might be sellout, or it might be survival.",next:"y3_fest_branded",effects:{audience:1500,money:3000,reputation:-8,wellbeing:5}},
+{label:"Commit to Hybrid Strategy",desc:"Online presence + selective festival submissions.",next:"y3_fest_hybrid",effects:{audience:4000,money:-1500,reputation:18,wellbeing:8}},
+{label:"Go Full YouTube",desc:"The festival world is too slow and expensive.",next:"y2_yt_dedicated",effects:{audience:5000,money:0,reputation:-5,wellbeing:10},tag:"SWITCH PATH"}
+]},
+
+// ============ YEAR 3: THE CROSSROADS ============
+y3_yt_debt_recovery:{year:3,type:"YouTube · Year Three",title:"Climbing Out of the Hole",mood:"dark",
+text:`You owe $5,000. Interest accumulates. Every video you make now goes toward debt.
+
+<strong>Your passion project has become an obligation.</strong>
+
+A larger channel offers to buy your channel outright for $8,000.`,
+choices:[
+{label:"Sell the Channel",desc:"Clear debt, walk away, start fresh somewhere else.",next:"y4_sold_out",effects:{audience:-20000,money:8000,reputation:-15,wellbeing:15}},
+{label:"Grind Through the Debt",desc:"Keep making videos. Pay it off slowly.",next:"y4_yt_debt_grind",effects:{audience:3000,money:2000,reputation:5,wellbeing:-20}},
+{label:"Declare Bankruptcy, Abandon Everything",desc:"Nuclear option. Destroy your credit, but be free.",next:"gameover_bankrupt",effects:{audience:0,money:0,reputation:-30,wellbeing:-25}}
+]},
+
+y3_yt_settled:{year:3,type:"YouTube · Year Three",title:"After the Storm",mood:"calm",
+text:`The legal threat is behind you. $1,500 poorer, but free.
+
+Your audience stuck around, mostly. Some still think you're guilty of something.
+
+<strong>You're more cautious now. Maybe too cautious.</strong>`,
+choices:[
+{label:"Return to Bold Work",desc:"Don't let them make you timid.",next:"y4_yt_bold_return",effects:{audience:6000,money:1500,reputation:18,wellbeing:8}},
+{label:"Play It Safe From Now On",desc:"Only use footage you're 100% certain about.",next:"y4_yt_safe_path",effects:{audience:3000,money:2000,reputation:10,wellbeing:15}},
+{label:"Make a Video About the Experience",desc:"Turn your trauma into content. It's what creators do.",next:"y4_yt_meta_legal",effects:{audience:8000,money:800,reputation:15,wellbeing:-5}}
+]},
+
+y3_yt_compromised:{year:3,type:"YouTube · Year Three",title:"The Diminished Work",mood:"tense",
+text:`You re-edited the video. It's 73 minutes now instead of 112. The structure doesn't quite work anymore.
+
+<strong>Comments notice: "Something feels off about the pacing." "Wasn't this longer before?"</strong>
+
+You know it's not your best work. But it's what you could salvage.`,
+choices:[
+{label:"Move On to New Projects",desc:"Don't dwell. Make something fresh.",next:"y4_yt_fresh_start_mid",effects:{audience:4000,money:1000,reputation:8,wellbeing:12}},
+{label:"Re-release the Full Version Elsewhere",desc:"Put it on your Patreon or personal site.",next:"y4_yt_parallel_release",effects:{audience:2000,money:600,reputation:12,wellbeing:5}},
+{label:"Abandon Video Essays",desc:"Maybe this form isn't for you.",next:"gameover_quit",effects:{audience:0,money:500,reputation:-10,wellbeing:10}}
+]},
+
+y3_yt_sustainable:{year:3,type:"YouTube · Year Three",title:"The Sustainable Creator",mood:"hopeful",
+text:`One substantial video every 8-10 weeks. Your audience knows the rhythm.
+
+<strong>32,000 subscribers. $1,800/month combined revenue.</strong>
+
+It's not wealth. But it's a life. A publisher reaches out about a book deal.`,
+choices:[
+{label:"Pursue the Book Deal",desc:"Diversify your income and reach.",next:"y4_yt_book",effects:{audience:5000,money:3000,reputation:25,wellbeing:-10}},
+{label:"Stay Focused on Videos",desc:"Don't spread yourself too thin.",next:"y4_yt_focused",effects:{audience:8000,money:2000,reputation:15,wellbeing:15}},
+{label:"Experiment with New Formats",desc:"Try something your audience hasn't seen.",next:"y4_yt_experiment",effects:{audience:4000,money:1000,reputation:18,wellbeing:5}}
+]},
+
+y3_yt_delivered:{year:3,type:"YouTube · Year Three",title:"The Promise Kept",mood:"triumphant",
+text:`Part 2 is done. 2 hours 15 minutes. Your best work yet.
+
+<strong>890,000 views in the first month. Your channel exploded.</strong>
+
+But you're exhausted. And everyone wants Part 3.`,
+choices:[
+{label:"Announce Part 3",desc:"Strike while hot. You know the drill.",next:"y4_yt_trilogy_trap",effects:{audience:25000,money:5000,reputation:30,wellbeing:-30}},
+{label:"Explicitly Say No Part 3",desc:"Set boundaries publicly.",next:"y4_yt_boundaries",effects:{audience:10000,money:3000,reputation:20,wellbeing:20}},
+{label:"Go Silent, Let the Work Speak",desc:"Disappear for a while. Let the video find its audience.",next:"y4_yt_mysterious",effects:{audience:15000,money:2000,reputation:25,wellbeing:25}}
+]},
+
+y3_yt_teaching:{year:3,type:"YouTube · Year Three",title:"The Educator Path",mood:"calm",
+text:`Your course "Video Essay Fundamentals" has 320 students. Revenue: $9,500 total.
+
+Students are making their first videos. Some are really good.
+
+<strong>Teaching is fulfilling in a way making videos isn't always.</strong>`,
+choices:[
+{label:"Expand Teaching Practice",desc:"More courses. Workshops. Maybe a book.",next:"y4_yt_teaching_empire",effects:{audience:4000,money:8000,reputation:28,wellbeing:10}},
+{label:"Balance Teaching and Creating",desc:"Keep making videos. Teaching funds the practice.",next:"y4_yt_balance",effects:{audience:6000,money:5000,reputation:22,wellbeing:15}},
+{label:"A Student Plagiarized Your Work",desc:"One of them copied your style exactly and got more views.",next:"y4_yt_plagiarism",effects:{audience:2000,money:4000,reputation:15,wellbeing:-15}}
+]},
+
+y3_yt_transparent:{year:3,type:"YouTube · Year Three",title:"The Economics Video",mood:"hopeful",
+text:`Your video "The Real Economics of Video Essays" got 145,000 views. Comments flooded with support.
+
+Other creators shared it. You started a conversation the field needed.
+
+<strong>Trust rebuilt through honesty. Some brands respect you more now.</strong>`,
+choices:[
+{label:"Become a Creator Advocate",desc:"Speak about sustainability, fair pay, platform issues.",next:"y4_yt_advocate",effects:{audience:10000,money:2500,reputation:30,wellbeing:8}},
+{label:"Return to Film Content",desc:"The meta-commentary served its purpose.",next:"y4_yt_return_films",effects:{audience:8000,money:2000,reputation:20,wellbeing:18}},
+{label:"Take Selective Sponsorships Now",desc:"You've earned the right to be strategic.",next:"y4_yt_strategic_brand",effects:{audience:6000,money:5000,reputation:18,wellbeing:10}}
+]},
+
+y3_yt_sellout_spiral:{year:3,type:"YouTube · Year Three",title:"The Descent",mood:"dark",
+text:`More sponsorships. A VPN. A meal kit service. An AI writing tool.
+
+Your content is 40% ads now. The comments have turned.
+
+<strong>"I used to love this channel." "Sellout." "Unsubscribed."</strong>`,
+choices:[
+{label:"Double Down: More Sponsorships",desc:"The haters will leave. The money is real.",next:"gameover_sellout",effects:{audience:-8000,money:6000,reputation:-25,wellbeing:-15}},
+{label:"Hard Reset: Apologize and Change",desc:"Public mea culpa. Reject all sponsorships for a year.",next:"y4_yt_redemption",effects:{audience:-2000,money:-2000,reputation:10,wellbeing:5}},
+{label:"Pivot to Brand Work Full-Time",desc:"Stop pretending. Become a commercial creator.",next:"y4_yt_commercial",effects:{audience:-5000,money:8000,reputation:-20,wellbeing:0}}
+]},
+
+y3_yt_pure:{year:3,type:"YouTube · Year Three",title:"The Purist",mood:"calm",
+text:`No sponsorships. No Patreon perks. Just videos.
+
+<strong>Growth is slow. Money is tight. But your conscience is clear.</strong>
+
+A wealthy patron offers to fund your next project. No strings attached, they claim.`,
+choices:[
+{label:"Accept the Patron's Offer",desc:"What's the worst that could happen?",next:"y4_yt_patron_strings",effects:{audience:5000,money:8000,reputation:15,wellbeing:5}},
+{label:"Politely Decline",desc:"You don't want to owe anyone anything.",next:"y4_yt_truly_indie",effects:{audience:3000,money:-500,reputation:18,wellbeing:12}},
+{label:"Counter-Offer: Become an Advisor",desc:"Help them fund other creators instead.",next:"y4_yt_advisor",effects:{audience:2000,money:3000,reputation:22,wellbeing:10}}
+]},
+
+y3_yt_community:{year:3,type:"YouTube · Year Three",title:"The Communal Channel",mood:"hopeful",
+text:`285 patrons. Thriving Discord. Monthly watch parties.
+
+<strong>You've built more than a channel. You've built a space.</strong>
+
+But running a community is work. Some members are demanding. Drama happens.`,
+choices:[
+{label:"Hire a Community Manager",desc:"Your Patreon can barely afford it, but you need help.",next:"y4_yt_managed_community",effects:{audience:6000,money:-500,reputation:18,wellbeing:20}},
+{label:"Set Stricter Boundaries",desc:"You can't be everyone's friend.",next:"y4_yt_bounded_community",effects:{audience:4000,money:1500,reputation:15,wellbeing:15}},
+{label:"A Community Member Betrays You",desc:"They leaked your unreleased video. Drama explodes.",next:"y4_yt_betrayal",effects:{audience:-2000,money:500,reputation:-8,wellbeing:-20}}
+]},
+
+y3_yt_ambitious:{year:3,type:"YouTube · Year Three",title:"The Big Swing",mood:"tense",
+text:`Your patrons funded a 90-minute video essay. Original music commissioned. Archival footage licensed.
+
+<strong>Production cost: $12,000. You've never worked at this scale.</strong>
+
+Two weeks before release, a major channel drops a video on the same topic.`,
+choices:[
+{label:"Release Anyway",desc:"Your take is different. Trust your work.",next:"y4_yt_released_anyway",effects:{audience:18000,money:2000,reputation:25,wellbeing:5}},
+{label:"Delay and Differentiate",desc:"Reframe your video to acknowledge theirs.",next:"y4_yt_delayed_release",effects:{audience:12000,money:1000,reputation:20,wellbeing:-5}},
+{label:"Pivot the Entire Video",desc:"Radical re-edit. Reference their video directly.",next:"y4_yt_response_video",effects:{audience:25000,money:500,reputation:22,wellbeing:-15}}
+]},
+
+y3_yt_steady:{year:3,type:"YouTube · Year Three",title:"The Plateau",mood:"calm",
+text:`Same pace. Same quality. Same audience.
+
+<strong>You've found a groove. It's comfortable. Maybe too comfortable.</strong>
+
+Your analytics are flat. Growth has stalled.`,
+choices:[
+{label:"Stay the Course",desc:"Consistency is a virtue.",next:"y4_yt_consistent",effects:{audience:2000,money:2000,reputation:12,wellbeing:18}},
+{label:"Take a Creative Risk",desc:"Try something that might fail spectacularly.",next:"y4_yt_risky_move",effects:{audience:5000,money:-500,reputation:15,wellbeing:5}},
+{label:"Collaborate with Bigger Creators",desc:"Exposure through association.",next:"y4_yt_collab_attempt",effects:{audience:8000,money:1000,reputation:18,wellbeing:0}}
+]},
+
+y3_yt_parttime:{year:3,type:"YouTube · Year Three",title:"The Day Job Balance",mood:"calm",
+text:`Working three days a week at a nonprofit. Videos every 6 weeks.
+
+<strong>Your channel grows slowly. Your bank account grows faster.</strong>
+
+Your boss asks if you want full-time. More money, less video time.`,
+choices:[
+{label:"Take Full-Time",desc:"Financial security. Videos become a hobby.",next:"y4_yt_hobby_mode",effects:{audience:-1000,money:6000,reputation:-5,wellbeing:20}},
+{label:"Stay Part-Time",desc:"Protect your creative time.",next:"y4_yt_protected_time",effects:{audience:3000,money:3000,reputation:12,wellbeing:15}},
+{label:"Quit to Go Full Creator",desc:"You've saved enough. Take the leap.",next:"y4_yt_fulltime_risk",effects:{audience:5000,money:-4000,reputation:15,wellbeing:-10}}
+]},
+
+y3_yt_grant_attempt:{year:3,type:"YouTube · Year Three",title:"The Grant Application",mood:"tense",
+text:`You applied for a documentary fund. Your feature-length essay caught their attention.
+
+<strong>Six months of waiting. Then an email.</strong>
+
+"We regret to inform you..." But there's a follow-up: a smaller emergency grant for $3,000.`,
+choices:[
+{label:"Take the Small Grant",desc:"It's something. Make something with it.",next:"y4_yt_small_grant",effects:{audience:3000,money:3000,reputation:15,wellbeing:5}},
+{label:"Reject and Keep Applying",desc:"You deserve more than crumbs.",next:"y4_yt_grant_grind",effects:{audience:1000,money:-1000,reputation:10,wellbeing:-10}},
+{label:"Abandon the Grant Path",desc:"Institutions aren't for you.",next:"y4_yt_no_institutions",effects:{audience:4000,money:500,reputation:8,wellbeing:10}}
+]},
+
+y3_yt_hybrid:{year:3,type:"YouTube · Year Three",title:"The Double Life Continues",mood:"calm",
+text:`Day job. Monthly video. The rhythm is sustainable.
+
+<strong>Your coworker discovered your channel. They're impressed.</strong>
+
+They want to collaborate—make something for the archive's channel.`,
+choices:[
+{label:"Collaborate with the Archive",desc:"Your job and passion might merge.",next:"y4_yt_archive_merge",effects:{audience:5000,money:2500,reputation:20,wellbeing:10}},
+{label:"Keep Work and Channel Separate",desc:"Don't mix professional and personal.",next:"y4_yt_separated_lives",effects:{audience:3000,money:3500,reputation:12,wellbeing:15}},
+{label:"Your Boss Finds Out You're Using Footage",desc:"That archive material in your videos? It's technically theirs.",next:"y4_yt_footage_conflict",effects:{audience:2000,money:2000,reputation:8,wellbeing:-10}}
+]},
+
+y3_yt_archive:{year:3,type:"YouTube · Year Three",title:"The Archivist Creator",mood:"hopeful",
+text:`Access to rare footage transformed your channel. Videos on lost films, forgotten directors.
+
+<strong>18,000 subscribers who trust your archival expertise.</strong>
+
+A museum wants to commission you for their exhibition.`,
+choices:[
+{label:"Take the Museum Commission",desc:"Prestigious but time-consuming.",next:"y4_yt_museum",effects:{audience:6000,money:4000,reputation:30,wellbeing:-5}},
+{label:"Focus on YouTube Growth",desc:"The museum can wait. Audience first.",next:"y4_yt_audience_first",effects:{audience:10000,money:2000,reputation:18,wellbeing:10}},
+{label:"Your Archive Access Gets Revoked",desc:"New policy. No more rare footage for personal projects.",next:"y4_yt_access_lost",effects:{audience:2000,money:2500,reputation:12,wellbeing:-15}}
+]},
+
+y3_yt_fulltime_leap:{year:3,type:"YouTube · Year Three",title:"The Leap of Faith",mood:"tense",
+text:`You quit your job. You're a full-time video essayist now.
+
+<strong>Six months of runway. Clock is ticking.</strong>
+
+Month three. Views are down. Savings at $2,400.`,
+choices:[
+{label:"Double Down on Content",desc:"More videos. Break through by volume.",next:"y4_yt_volume_push",effects:{audience:8000,money:-1500,reputation:15,wellbeing:-25}},
+{label:"Diversify Revenue Streams",desc:"Courses, consulting, commissioned work.",next:"y4_yt_diversified",effects:{audience:4000,money:3000,reputation:18,wellbeing:-5}},
+{label:"Look for a Job Again",desc:"This isn't working. Be realistic.",next:"y4_yt_retreat",effects:{audience:2000,money:4000,reputation:5,wellbeing:10}}
+]},
+
+y3_yt_academic_bridge:{year:3,type:"YouTube · Year Three",title:"Between Worlds",mood:"hopeful",
+text:`The guest lecture went well. Students asked great questions.
+
+<strong>A visiting position opens up. One year, teaching two courses.</strong>
+
+It pays $28,000. Your YouTube income is $22,000/year now.`,
+choices:[
+{label:"Take the Position",desc:"Security plus legitimacy.",next:"y4_yt_visiting_prof",effects:{audience:3000,money:5000,reputation:32,wellbeing:5}},
+{label:"Decline and Stay Independent",desc:"You're not an academic. Don't pretend.",next:"y4_yt_refused_academy",effects:{audience:6000,money:2000,reputation:18,wellbeing:15}},
+{label:"Negotiate Part-Time Teaching",desc:"Try to get the best of both worlds.",next:"y4_yt_adjunct",effects:{audience:4000,money:3500,reputation:25,wellbeing:0}}
+]},
+
+y3_yt_independent:{year:3,type:"YouTube · Year Three",title:"The Independent Voice",mood:"calm",
+text:`No institution owns your voice. No algorithm owns your time (mostly).
+
+<strong>You answer only to your own standards.</strong>
+
+But you're tired. And lonely. The creator life is isolating.`,
+choices:[
+{label:"Join a Creator Collective",desc:"Find community with other independents.",next:"y4_yt_collective",effects:{audience:5000,money:1000,reputation:18,wellbeing:20}},
+{label:"Stay Solo",desc:"Independence means independence.",next:"y4_yt_lone_wolf",effects:{audience:4000,money:1500,reputation:15,wellbeing:5}},
+{label:"Take a Break",desc:"Burnout is real. Step away for a few months.",next:"y4_yt_sabbatical",effects:{audience:-2000,money:-2000,reputation:10,wellbeing:30}}
+]},
+
+y3_yt_criterion:{year:3,type:"YouTube · Year Three",title:"The Criterion Collaboration",mood:"triumphant",
+text:`Your video for Criterion's channel got 1.1 million views. Your name next to filmmakers you admire.
+
+<strong>The niche expertise paid off spectacularly.</strong>
+
+Criterion wants more. Arrow wants you too. BFI is asking.`,
+choices:[
+{label:"Become an Institutional Creator",desc:"Professional commissions. Steady work.",next:"y4_yt_institutional",effects:{audience:25000,money:8000,reputation:45,wellbeing:5}},
+{label:"Balance Personal and Commissioned",desc:"Some work for hire, some work for you.",next:"y4_yt_balanced_commissions",effects:{audience:18000,money:6000,reputation:38,wellbeing:15}},
+{label:"They Want to Change Your Style",desc:"Creative differences emerge. Your voice vs. their brand.",next:"y4_yt_creative_conflict",effects:{audience:15000,money:5000,reputation:35,wellbeing:-10}}
+]},
+
+y3_yt_negotiate_criterion:{year:3,type:"YouTube · Year Three",title:"The Negotiation",mood:"tense",
+text:`You pushed back. They respect that, actually.
+
+<strong>Final offer: $5,000 for one video. That's real money.</strong>
+
+But they want approval over the final cut.`,
+choices:[
+{label:"Accept with Approval Clause",desc:"Money is money. Make compromises.",next:"y4_yt_approved_work",effects:{audience:12000,money:5000,reputation:28,wellbeing:5}},
+{label:"Counter: Money But No Approval",desc:"Stand your ground.",next:"y4_yt_stood_ground",effects:{audience:8000,money:3500,reputation:32,wellbeing:10}},
+{label:"Walk Away",desc:"Integrity over opportunity.",next:"y4_yt_walked_away",effects:{audience:4000,money:500,reputation:25,wellbeing:15}}
+]},
+
+y3_yt_small_pure:{year:3,type:"YouTube · Year Three",title:"The Intentionally Small",mood:"calm",
+text:`15,000 subscribers. Slow, organic growth.
+
+<strong>You turned down opportunities others would kill for.</strong>
+
+Your niche audience is devoted. But can this last?`,
+choices:[
+{label:"Accept Smallness",desc:"This is enough. This is the goal.",next:"y4_yt_accepted_small",effects:{audience:3000,money:1500,reputation:18,wellbeing:22}},
+{label:"One Strategic Growth Move",desc:"Collaborate with someone bigger. Just once.",next:"y4_yt_strategic_growth",effects:{audience:8000,money:1000,reputation:15,wellbeing:5}},
+{label:"Your Niche is Dying",desc:"Fewer people care about Czech cinema every year.",next:"y4_yt_dying_niche",effects:{audience:-1000,money:500,reputation:12,wellbeing:-5}}
+]},
+
+y3_yt_rebuild:{year:3,type:"YouTube · Year Three",title:"Starting Over (Again)",mood:"tense",
+text:`New channel, 8 months in. 4,200 subscribers.
+
+<strong>You're doing better than the first time. You know what you're doing now.</strong>
+
+But the grind feels heavier when you've done it before.`,
+choices:[
+{label:"Commit to the Rebuild",desc:"You've done this before. Do it better.",next:"y4_yt_rebuilt",effects:{audience:6000,money:1000,reputation:12,wellbeing:5}},
+{label:"Pivot to Short Form",desc:"TikTok, Reels, Shorts. Meet audiences where they are.",next:"y4_yt_short_form",effects:{audience:15000,money:500,reputation:8,wellbeing:-5}},
+{label:"Give Up on Video",desc:"Maybe writing is more your speed.",next:"gameover_quit",effects:{audience:0,money:1000,reputation:5,wellbeing:15}}
+]},
+
+y3_yt_pivot:{year:3,type:"YouTube · Year Three",title:"The Reinvention",mood:"tense",
+text:`You tried gaming content. Cultural commentary. Reaction videos.
+
+<strong>Some worked. Some didn't. You're 12,000 subscribers with no clear identity.</strong>
+
+An old subscriber comments: "What happened to your film essays? I miss those."`,
+choices:[
+{label:"Return to Film Essays",desc:"Maybe you abandoned what made you special.",next:"y4_yt_returned_home",effects:{audience:5000,money:500,reputation:15,wellbeing:10}},
+{label:"Commit to the New Direction",desc:"Evolution is necessary. Don't look back.",next:"y4_yt_evolved",effects:{audience:8000,money:1500,reputation:10,wellbeing:5}},
+{label:"Create a Second Channel",desc:"Film essays there, other stuff here.",next:"y4_yt_split_identity",effects:{audience:6000,money:-500,reputation:12,wellbeing:-10}}
+]},
+
+y3_fest_desktop:{year:3,type:"Festival · Year Three",title:"The Desktop Documentary",mood:"hopeful",
+text:`Your no-budget desktop documentary resonated. Festivals programmed it. Critics praised its intimacy.
+
+<strong>You proved that resources aren't prerequisites for art.</strong>
+
+A production company wants to fund your next project. $30,000. But they want commercial potential.`,
+choices:[
+{label:"Take the Money",desc:"You can make something good with constraints.",next:"y4_fest_funded_compromise",effects:{audience:2000,money:12000,reputation:28,wellbeing:5}},
+{label:"Decline and Stay Lo-Fi",desc:"The constraint was the point.",next:"y4_fest_stayed_lofi",effects:{audience:1500,money:500,reputation:32,wellbeing:15}},
+{label:"Counter with Creative Control",desc:"Money but your vision.",next:"y4_fest_negotiated_control",effects:{audience:1800,money:8000,reputation:30,wellbeing:8}}
+]},
+
+y3_fest_crowdfund:{year:3,type:"Festival · Year Three",title:"The Crowdfunding Campaign",mood:"tense",
+text:`Kickstarter goal: $15,000. You promoted relentlessly for 30 days.
+
+<strong>Final total: $11,200. Not quite enough, but close.</strong>
+
+You have to decide whether to take the partial funding and scale back.`,
+choices:[
+{label:"Take It and Adapt",desc:"Make what you can with what you have.",next:"y4_fest_adapted",effects:{audience:2000,money:4000,reputation:22,wellbeing:5}},
+{label:"Cancel and Try Again Later",desc:"You need the full budget.",next:"y4_fest_cancelled",effects:{audience:-500,money:-1000,reputation:15,wellbeing:-10}},
+{label:"Fund the Gap Yourself",desc:"Go into debt to complete the vision.",next:"y4_fest_self_funded",effects:{audience:1500,money:-5000,reputation:25,wellbeing:-15}}
+]},
+
+y3_fest_branded:{year:3,type:"Festival · Year Three",title:"The Branded Content Question",mood:"tense",
+text:`The production company meeting went well. They like your style.
+
+<strong>The project: a 12-minute branded documentary for a luxury watch company. Fee: $18,000.</strong>
+
+Your festival friends would judge you. But that's a year's income.`,
+choices:[
+{label:"Take the Branded Work",desc:"Money is money. Separate art from commerce.",next:"y4_fest_branded_path",effects:{audience:1000,money:18000,reputation:-12,wellbeing:10}},
+{label:"Decline Politely",desc:"Your reputation matters more.",next:"y4_fest_declined_brand",effects:{audience:500,money:-500,reputation:18,wellbeing:5}},
+{label:"Counter with Documentary About the Industry",desc:"Make it critical. Have it both ways.",next:"y4_fest_subversive_brand",effects:{audience:3000,money:8000,reputation:8,wellbeing:0}}
+]},
+
+y3_fest_hybrid:{year:3,type:"Festival · Year Three",title:"The Hybrid Practitioner",mood:"hopeful",
+text:`Online: 28,000 followers across platforms. Festivals: 8 screenings this year.
+
+<strong>The tension between these worlds is productive.</strong>
+
+A streaming service wants an exclusive. No more festival premieres first.`,
+choices:[
+{label:"Accept the Exclusive",desc:"Guaranteed audience. Steady income.",next:"y4_fest_streaming_exclusive",effects:{audience:15000,money:6000,reputation:20,wellbeing:10}},
+{label:"Protect Festival Premieres",desc:"The theatrical experience matters.",next:"y4_fest_protected_theatrical",effects:{audience:5000,money:2000,reputation:32,wellbeing:5}},
+{label:"Try to Negotiate Both",desc:"Maybe you can window it strategically.",next:"y4_fest_windowing",effects:{audience:10000,money:4000,reputation:25,wellbeing:-5}}
+]},
+
+// ============ YEAR 4: THE RECKONING ============
+// Game overs and failures
+gameover_legal:{year:4,type:"GAME OVER",title:"Legal Destruction",mood:"dark",gameOver:true,reason:"legal",
+text:`The lawsuit dragged on for eighteen months. Legal fees: $34,000. You lost.
+
+<strong>Your channel is gone. Your savings are gone. Your reputation is in tatters.</strong>
+
+The other side's lawyer made an example of you. "This is what happens to content thieves."
+
+You weren't a thief. But that doesn't matter anymore.`},
+
+gameover_sellout:{year:4,type:"GAME OVER",title:"The Sellout's End",mood:"dark",gameOver:true,reason:"reputation",
+text:`More sponsorships. More compromises. The comments section became a wasteland of disappointment.
+
+<strong>Your audience left. Your reputation in the field is destroyed.</strong>
+
+A former fan's comment, liked 2,400 times: "I used to recommend your videos to everyone. Now I warn people away."
+
+You have money. You have nothing else.`},
+
+gameover_bankrupt:{year:4,type:"GAME OVER",title:"Financial Collapse",mood:"dark",gameOver:true,reason:"money",
+text:`The debt collectors stopped calling. That's not a good sign.
+
+<strong>Bankruptcy proceedings begin next month.</strong>
+
+Your equipment will be sold. Your hard drives full of footage—legally, they might take those too.
+
+Five years of work. Gone.`},
+
+gameover_burnout:{year:4,type:"GAME OVER",title:"Complete Burnout",mood:"dark",gameOver:true,reason:"burnout",
+text:`You can't get out of bed. Your doctor uses words like "severe" and "hospitalization."
+
+<strong>Your body finally forced you to stop.</strong>
+
+The videos don't matter when you can barely function. The comments keep coming. You can't read them.
+
+Maybe someday you'll make videos again. But not for a long time.`},
+
+gameover_quit:{year:4,type:"GAME OVER",title:"The Quiet Exit",mood:"dark",gameOver:true,reason:"quit",
+text:`You uploaded your last video six months ago. No announcement. Just... stopped.
+
+<strong>Someone on Reddit asked "Whatever happened to..." and nobody really knew.</strong>
+
+You're happier now, maybe. Working a normal job. But sometimes you watch video essays and think about what might have been.`},
+
+// Year 4 continuation scenes
+y4_sold_out:{year:4,type:"Year Four",title:"After the Sale",mood:"calm",
+text:`The channel belongs to someone else now. They're running it into the ground.
+
+<strong>You have $8,000 and no platform.</strong>
+
+What now?`,
+choices:[
+{label:"Start Fresh, New Identity",desc:"You've done this before.",next:"y5_fresh_identity",effects:{audience:0,money:2000,reputation:5,wellbeing:15}},
+{label:"Leave the Creator Economy",desc:"Find peace elsewhere.",next:"y5_left_creating",effects:{audience:0,money:5000,reputation:0,wellbeing:25}},
+{label:"Write About the Experience",desc:"Your story might help others.",next:"y5_wrote_memoir",effects:{audience:5000,money:3000,reputation:15,wellbeing:10}}
+]},
+
+y4_yt_debt_grind:{year:4,type:"YouTube · Year Four",title:"The Debt Grind",mood:"dark",
+text:`Eighteen months of paying down debt. Every video feels like an obligation.
+
+<strong>$1,200 left to pay. You can see the end.</strong>
+
+But you've lost something along the way. The joy is gone.`,
+choices:[
+{label:"Finish the Debt, Then Reassess",desc:"Just get through this.",next:"y5_debt_free",effects:{audience:2000,money:1500,reputation:10,wellbeing:5}},
+{label:"Take a Break Anyway",desc:"Your mental health can't wait.",next:"y5_forced_break",effects:{audience:-1000,money:-500,reputation:8,wellbeing:20}},
+{label:"The Grind Breaks You",desc:"You can't do this anymore.",next:"gameover_burnout",effects:{audience:0,money:0,reputation:5,wellbeing:-30}}
+]},
+
+y4_yt_bold_return:{year:4,type:"YouTube · Year Four",title:"The Bold Return",mood:"hopeful",
+text:`Your comeback video is your best work yet. No fear. No hedging.
+
+<strong>380,000 views. The comments are overwhelmingly positive.</strong>
+
+You're back. For real this time.`,
+choices:[
+{label:"Maintain the Momentum",desc:"You know what works now.",next:"y5_momentum",effects:{audience:15000,money:4000,reputation:25,wellbeing:10}},
+{label:"Don't Repeat Past Mistakes",desc:"Sustainable pace this time.",next:"y5_sustainable_success",effects:{audience:8000,money:3000,reputation:22,wellbeing:20}},
+{label:"Someone Copies Your Video",desc:"A bigger creator made the same essay two weeks later.",next:"y5_copied",effects:{audience:5000,money:2000,reputation:18,wellbeing:-10}}
+]},
+
+y4_yt_safe_path:{year:4,type:"YouTube · Year Four",title:"The Safe Path",mood:"calm",
+text:`Only footage you own. Only topics without controversy. Steady, reliable content.
+
+<strong>Your channel grows slowly. 28,000 subscribers.</strong>
+
+Some fans miss the old you. "Your videos used to take more risks."`,
+choices:[
+{label:"Stay Safe",desc:"Risks aren't worth it anymore.",next:"y5_stayed_safe",effects:{audience:5000,money:3000,reputation:15,wellbeing:18}},
+{label:"One Carefully Calculated Risk",desc:"Maybe just one bold video.",next:"y5_calculated_risk",effects:{audience:12000,money:2000,reputation:22,wellbeing:5}},
+{label:"Safe Content Gets Boring",desc:"Even you're bored making it.",next:"y5_bored_safe",effects:{audience:2000,money:2500,reputation:12,wellbeing:-5}}
+]},
+
+y4_yt_meta_legal:{year:4,type:"YouTube · Year Four",title:"The Meta Video",mood:"tense",
+text:`Your video about the copyright experience went viral. 650,000 views. Other creators shared it.
+
+<strong>You've become an advocate for fair use. People look to you now.</strong>
+
+A lawyer asks if you'd be an expert witness in a similar case.`,
+choices:[
+{label:"Become a Fair Use Advocate",desc:"This is your new purpose.",next:"y5_advocate",effects:{audience:20000,money:2000,reputation:35,wellbeing:5}},
+{label:"Return to Regular Content",desc:"You're not an activist.",next:"y5_returned_normal",effects:{audience:10000,money:3000,reputation:22,wellbeing:15}},
+{label:"The Attention Overwhelms",desc:"You didn't sign up for this spotlight.",next:"y5_overwhelmed",effects:{audience:15000,money:2500,reputation:28,wellbeing:-15}}
+]},
+
+y4_yt_book:{year:4,type:"YouTube · Year Four",title:"The Book Deal",mood:"hopeful",
+text:`You signed a book contract. $8,000 advance for "How to Watch Movies: A Video Essayist's Guide."
+
+<strong>Writing is different from making videos. Harder in some ways.</strong>
+
+The deadline is in eight months. You're three months in with 12,000 words.`,
+choices:[
+{label:"Deliver the Book",desc:"Push through. Writers write.",next:"y5_book_delivered",effects:{audience:8000,money:5000,reputation:30,wellbeing:-10}},
+{label:"Negotiate Extension",desc:"Quality takes time.",next:"y5_book_extended",effects:{audience:4000,money:3000,reputation:22,wellbeing:5}},
+{label:"Return the Advance",desc:"This isn't working. Be honest.",next:"y5_book_returned",effects:{audience:2000,money:-2000,reputation:15,wellbeing:15}}
+]},
+
+y4_yt_focused:{year:4,type:"YouTube · Year Four",title:"The Focused Path",mood:"calm",
+text:`Just videos. Nothing else. Your craft has never been better.
+
+<strong>45,000 subscribers. $3,200/month revenue.</strong>
+
+It's working. But YouTube is changing. Shorts are everything now.`,
+choices:[
+{label:"Ignore Shorts",desc:"Long-form is your strength.",next:"y5_long_form_only",effects:{audience:8000,money:3500,reputation:25,wellbeing:15}},
+{label:"Experiment with Shorts",desc:"Adapt or die.",next:"y5_shorts_experiment",effects:{audience:20000,money:2500,reputation:18,wellbeing:0}},
+{label:"The Algorithm Punishes You",desc:"Your views drop 40% overnight.",next:"y5_algorithm_shift",effects:{audience:-5000,money:1500,reputation:20,wellbeing:-15}}
+]},
+
+y4_yt_experiment:{year:4,type:"YouTube · Year Four",title:"The Experimental Phase",mood:"tense",
+text:`You tried something new. A 45-minute video essay structured as a video game walkthrough.
+
+<strong>Result: Your most divisive video ever. Some loved it. Many hated it.</strong>
+
+"Stick to what you're good at." "This is your best work." The comments are at war.`,
+choices:[
+{label:"Double Down on Experiments",desc:"The haters will leave. Good.",next:"y5_experimental_identity",effects:{audience:5000,money:1000,reputation:22,wellbeing:10}},
+{label:"Return to Classic Style",desc:"Lesson learned.",next:"y5_classic_return",effects:{audience:8000,money:2500,reputation:18,wellbeing:12}},
+{label:"The Controversy Escalates",desc:"Someone made a callout thread about your 'pretentious' work.",next:"y5_controversy",effects:{audience:-2000,money:500,reputation:15,wellbeing:-20}}
+]},
+
+y4_yt_teaching_empire:{year:4,type:"YouTube · Year Four",title:"The Education Business",mood:"hopeful",
+text:`Three courses. 2,400 total students. Revenue: $62,000 this year.
+
+<strong>You're a teacher who happens to make videos now.</strong>
+
+A venture-backed ed-tech company wants to acquire your courses.`,
+choices:[
+{label:"Sell to the Company",desc:"Cash out. Let them scale it.",next:"y5_sold_courses",effects:{audience:5000,money:40000,reputation:20,wellbeing:10}},
+{label:"Stay Independent",desc:"You built this. Keep it.",next:"y5_indie_educator",effects:{audience:8000,money:15000,reputation:28,wellbeing:15}},
+{label:"The Market Gets Saturated",desc:"Everyone's selling video essay courses now.",next:"y5_course_competition",effects:{audience:3000,money:8000,reputation:22,wellbeing:-5}}
+]},
+
+y4_yt_plagiarism:{year:4,type:"YouTube · Year Four",title:"The Plagiarism Problem",mood:"dark",
+text:`A student you taught made a video that's basically a remake of yours. They have 200,000 more subscribers.
+
+<strong>Their video got 1.2 million views. Yours got 89,000.</strong>
+
+They never credited you. The comments on their video say "so original!"`,
+choices:[
+{label:"Call Them Out Publicly",desc:"The truth deserves to be told.",next:"y5_callout",effects:{audience:15000,money:500,reputation:20,wellbeing:-15}},
+{label:"Reach Out Privately",desc:"Maybe they didn't realize.",next:"y5_private_resolution",effects:{audience:3000,money:1000,reputation:15,wellbeing:5}},
+{label:"Let It Go",desc:"The work speaks for itself.",next:"y5_let_go",effects:{audience:5000,money:2000,reputation:18,wellbeing:10}}
+]},
+
+// More Year 4 scenes
+y4_yt_balance:{year:4,type:"YouTube · Year Four",title:"The Balanced Life",mood:"calm",
+text:`Teaching and creating in harmony. Neither dominates.
+
+<strong>Modest success on both fronts. 35,000 subscribers. Steady course sales.</strong>
+
+A full-time university position opens up. Tenure track.`,
+choices:[
+{label:"Apply for Tenure Track",desc:"Real stability at last.",next:"y5_tenure_decision",effects:{audience:3000,money:5000,reputation:28,wellbeing:10}},
+{label:"Stay Independent",desc:"Academia would swallow you.",next:"y5_stayed_indie",effects:{audience:8000,money:4000,reputation:22,wellbeing:18}},
+{label:"The Balance Breaks",desc:"Something has to give. Both paths suffer.",next:"y5_balance_broke",effects:{audience:-2000,money:2000,reputation:15,wellbeing:-10}}
+]},
+
+y4_yt_betrayal:{year:4,type:"YouTube · Year Four",title:"The Betrayal",mood:"dark",
+text:`A trusted Discord member leaked your unreleased video. It's everywhere.
+
+<strong>The video you'd been working on for six months. Premiered by a pirate.</strong>
+
+Your community is in civil war. Some defend you. Some defend them.`,
+choices:[
+{label:"Release It Anyway",desc:"Take back the narrative.",next:"y5_reclaimed",effects:{audience:8000,money:1000,reputation:15,wellbeing:-5}},
+{label:"Abandon the Project",desc:"It's tainted now.",next:"y5_abandoned_project",effects:{audience:-3000,money:-500,reputation:10,wellbeing:-15}},
+{label:"Rebuild the Community",desc:"This is a test of what you built.",next:"y5_rebuilt_community",effects:{audience:5000,money:500,reputation:18,wellbeing:5}}
+]},
+
+y4_yt_institutional:{year:4,type:"YouTube · Year Four",title:"The Institutional Creator",mood:"hopeful",
+text:`Criterion. Arrow. MUBI. BFI. Your commissions are prestigious and steady.
+
+<strong>Annual income: $75,000. But you haven't made a personal video in 14 months.</strong>
+
+Are you still a video essayist? Or are you a contractor?`,
+choices:[
+{label:"Embrace the Role",desc:"This is success. Accept it.",next:"y5_institutional_success",effects:{audience:20000,money:25000,reputation:45,wellbeing:5}},
+{label:"Carve Out Personal Time",desc:"Force yourself to make something yours.",next:"y5_forced_personal",effects:{audience:15000,money:18000,reputation:40,wellbeing:15}},
+{label:"Creative Burnout Hits",desc:"The commissions feel hollow.",next:"y5_institutional_burnout",effects:{audience:12000,money:20000,reputation:38,wellbeing:-20}}
+]},
+
+y4_yt_collective:{year:4,type:"YouTube · Year Four",title:"The Creator Collective",mood:"hopeful",
+text:`You joined a collective of independent video essayists. Shared resources, cross-promotion.
+
+<strong>Together, you're more visible. But decisions take longer.</strong>
+
+The collective wants to pitch a TV show. Some members would be featured. Others wouldn't.`,
+choices:[
+{label:"Support the Pitch",desc:"Rising tides lift all boats.",next:"y5_collective_pitch",effects:{audience:10000,money:2000,reputation:25,wellbeing:10}},
+{label:"Advocate for Equal Representation",desc:"Everyone or no one.",next:"y5_equal_rep",effects:{audience:6000,money:1000,reputation:28,wellbeing:5}},
+{label:"The Collective Fractures",desc:"Egos and money tear it apart.",next:"y5_collective_died",effects:{audience:-2000,money:500,reputation:18,wellbeing:-10}}
+]},
+
+// Year 4 Academic
+y4_ac_tenure_track:{year:4,type:"Academic · Year Four",title:"The Tenure Track",mood:"tense",
+text:`You got the job. Tenure-track assistant professor.
+
+<strong>Six years to prove yourself. Publish or perish.</strong>
+
+The teaching load is crushing. When will you make videos?`,
+choices:[
+{label:"Prioritize the Job",desc:"Security first. Videos later.",next:"y5_prioritized_tenure",effects:{audience:-500,money:8000,reputation:30,wellbeing:-15}},
+{label:"Maintain Video Practice",desc:"Your identity depends on it.",next:"y5_maintained_practice",effects:{audience:2000,money:5000,reputation:35,wellbeing:-5}},
+{label:"The Job Consumes You",desc:"Three years in, zero videos made.",next:"y5_consumed_by_job",effects:{audience:-2000,money:10000,reputation:28,wellbeing:-25}}
+]},
+
+y4_ac_mentor:{year:4,type:"Academic · Year Four",title:"The Mentor's Path",mood:"hopeful",
+text:`Your students are making remarkable work. Some better than yours at that age.
+
+<strong>Your legacy might be the people you've helped.</strong>
+
+A mentee gets a major award. They thank everyone except you.`,
+choices:[
+{label:"Feel the Hurt, Move On",desc:"This happens. Keep mentoring.",next:"y5_kept_mentoring",effects:{audience:800,money:4000,reputation:38,wellbeing:5}},
+{label:"Step Back from Mentoring",desc:"Protect your energy.",next:"y5_less_mentoring",effects:{audience:500,money:4500,reputation:32,wellbeing:15}},
+{label:"Confront Them Privately",desc:"They should have acknowledged you.",next:"y5_confronted_mentee",effects:{audience:600,money:4000,reputation:35,wellbeing:-5}}
+]},
+
+y4_ac_public_scholar:{year:4,type:"Academic · Year Four",title:"The Public Scholar",mood:"hopeful",
+text:`Your YouTube + academic work has made you a recognizable name.
+
+<strong>75,000 subscribers. Tenure case coming up.</strong>
+
+The committee is split. Some think YouTube isn't "real scholarship."`,
+choices:[
+{label:"Argue for Your Model",desc:"The field needs to evolve.",next:"y5_argued_model",effects:{audience:10000,money:5000,reputation:40,wellbeing:5}},
+{label:"Emphasize Traditional Outputs",desc:"Play their game to win.",next:"y5_played_game",effects:{audience:5000,money:6000,reputation:35,wellbeing:-5}},
+{label:"Denied Tenure",desc:"They didn't count your videos.",next:"y5_denied_tenure",effects:{audience:8000,money:3000,reputation:30,wellbeing:-25}}
+]},
+
+// Year 4 Festival
+y4_fest_repped:{year:4,type:"Festival · Year Four",title:"Represented",mood:"hopeful",
+text:`Your sales agent got your film into 12 festivals worldwide. A small theatrical run in three cities.
+
+<strong>Revenue: $4,200. After their cut: $2,940.</strong>
+
+It's not much. But your film exists in the world.`,
+choices:[
+{label:"Keep Building Slowly",desc:"This is how careers are made.",next:"y5_slow_career",effects:{audience:2000,money:3000,reputation:35,wellbeing:10}},
+{label:"Push for Bigger Projects",desc:"You're ready for more.",next:"y5_bigger_projects",effects:{audience:3000,money:-2000,reputation:40,wellbeing:0}},
+{label:"The Agent Drops You",desc:"Your films aren't commercial enough.",next:"y5_dropped_by_agent",effects:{audience:1000,money:2000,reputation:28,wellbeing:-10}}
+]},
+
+y4_fest_experimental:{year:4,type:"Festival · Year Four",title:"The Experimental Turn",mood:"hopeful",
+text:`Your day job funded a truly strange film. 23 minutes of AI-generated imagery responding to silent cinema.
+
+<strong>Accepted to Rotterdam's experimental section.</strong>
+
+Critics are divided. "Visionary" vs. "pretentious nonsense."`,
+choices:[
+{label:"Lean Into the Controversy",desc:"Polarization is attention.",next:"y5_polarizing",effects:{audience:2000,money:1000,reputation:35,wellbeing:5}},
+{label:"Make Something More Accessible",desc:"Prove you can do both.",next:"y5_accessible_next",effects:{audience:3000,money:2000,reputation:28,wellbeing:10}},
+{label:"The Art World Claims You",desc:"Gallery invitations multiply.",next:"y5_gallery_path",effects:{audience:1000,money:4000,reputation:38,wellbeing:15}}
+]},
+
+// ============ YEAR 5: THE FINAL BOSS ============
+// These are the climactic decisions with high stakes
+y5_fresh_identity:{year:5,type:"Year Five · Final Chapter",title:"Starting Over",mood:"hopeful",
+text:`New name. New channel. Zero audience.
+
+<strong>But you're free. No history. No baggage.</strong>
+
+You've done this before. You can do it again. Or can you?`,
+choices:[
+{label:"Rebuild with Wisdom",desc:"Apply everything you learned.",next:"victory_rebuilt",effects:{audience:8000,money:2000,reputation:15,wellbeing:20}},
+{label:"Try Something Completely New",desc:"Why repeat yourself?",next:"victory_reinvented",effects:{audience:5000,money:1500,reputation:12,wellbeing:22}},
+{label:"Realize You Can't Go Back",desc:"Some things can only be done once.",next:"gameover_quit",effects:{audience:0,money:1000,reputation:5,wellbeing:-10}}
+]},
+
+y5_momentum:{year:5,type:"Year Five · Final Chapter",title:"Peak Momentum",mood:"triumphant",
+text:`Everything is working. 95,000 subscribers. Sponsors approaching you.
+
+<strong>This is what you dreamed of five years ago.</strong>
+
+A major streaming platform wants an exclusive deal. $200,000/year for three years.`,
+choices:[
+{label:"Take the Netflix Deal",desc:"Life-changing money. Lock it in.",next:"victory_netflix",effects:{audience:50000,money:60000,reputation:35,wellbeing:-5}},
+{label:"Stay Independent",desc:"You didn't come this far to have a boss.",next:"victory_indie_peak",effects:{audience:25000,money:15000,reputation:45,wellbeing:20}},
+{label:"Negotiate Better Terms",desc:"They need you more than you need them.",next:"victory_negotiated",effects:{audience:35000,money:35000,reputation:40,wellbeing:10}}
+]},
+
+y5_sustainable_success:{year:5,type:"Year Five · Final Chapter",title:"The Sustainable Peak",mood:"calm",
+text:`You learned from every mistake. Boundaries. Pace. Self-care.
+
+<strong>65,000 subscribers. $4,500/month. Enough.</strong>
+
+This could last. But is "enough" what you wanted?`,
+choices:[
+{label:"Accept 'Enough'",desc:"This is success by any measure.",next:"victory_enough",effects:{audience:10000,money:5000,reputation:30,wellbeing:28}},
+{label:"One Last Push",desc:"You could be bigger. Should you?",next:"victory_final_push",effects:{audience:25000,money:8000,reputation:35,wellbeing:5}},
+{label:"Step Back Further",desc:"Even this pace is too much.",next:"victory_stepped_back",effects:{audience:5000,money:3000,reputation:25,wellbeing:35}}
+]},
+
+y5_advocate:{year:5,type:"Year Five · Final Chapter",title:"The Advocate's Burden",mood:"tense",
+text:`You're testifying before Congress about creator rights. Your face is on industry panels.
+
+<strong>You're not really a video essayist anymore. You're an activist.</strong>
+
+Is this what you wanted?`,
+choices:[
+{label:"Embrace the Activist Role",desc:"Someone has to fight these battles.",next:"victory_activist",effects:{audience:30000,money:5000,reputation:50,wellbeing:5}},
+{label:"Return to Creating",desc:"Let others carry the torch now.",next:"victory_returned_creating",effects:{audience:15000,money:4000,reputation:35,wellbeing:20}},
+{label:"Burn Out on the Cause",desc:"The fight never ends. Neither does the exhaustion.",next:"gameover_burnout",effects:{audience:20000,money:3000,reputation:45,wellbeing:-25}}
+]},
+
+y5_institutional_success:{year:5,type:"Year Five · Final Chapter",title:"The Corporate Artist",mood:"tense",
+text:`You make $120,000/year creating videos for major institutions.
+
+<strong>You are, by any measure, successful.</strong>
+
+But you haven't had an original idea in two years. You execute briefs. You don't create.`,
+choices:[
+{label:"Accept the Trade-Off",desc:"Most artists never get this.",next:"victory_corporate",effects:{audience:30000,money:40000,reputation:42,wellbeing:10}},
+{label:"Quit to Go Independent",desc:"Burn it down. Start fresh.",next:"victory_burned_down",effects:{audience:10000,money:10000,reputation:35,wellbeing:25}},
+{label:"Negotiate Creative Projects",desc:"Use your position for personal work.",next:"victory_negotiated_freedom",effects:{audience:25000,money:30000,reputation:45,wellbeing:18}}
+]},
+
+y5_denied_tenure:{year:5,type:"Year Five · Final Chapter",title:"After Denial",mood:"dark",
+text:`They said no. Six years of work. Not enough traditional publications.
+
+<strong>Your YouTube following means nothing to them.</strong>
+
+You have one year to find another job or leave academia.`,
+choices:[
+{label:"Leave Academia with Grace",desc:"Their loss. You have an audience.",next:"victory_left_academia",effects:{audience:15000,money:3000,reputation:30,wellbeing:15}},
+{label:"Fight the Decision",desc:"They were wrong. Appeal.",next:"victory_fought_won",effects:{audience:8000,money:2000,reputation:38,wellbeing:-10}},
+{label:"Bitter Exit",desc:"Burn bridges. Tell the truth publicly.",next:"victory_bitter_exit",effects:{audience:20000,money:1000,reputation:25,wellbeing:5}}
+]},
+
+y5_bigger_projects:{year:5,type:"Year Five · Final Chapter",title:"The Big Swing",mood:"tense",
+text:`You've pitched a feature-length documentary to HBO. Budget: $450,000.
+
+<strong>They're interested. But they want changes you don't agree with.</strong>
+
+This could be your breakthrough—or the end of your vision.`,
+choices:[
+{label:"Accept Their Notes",desc:"Compromise is part of the game.",next:"victory_hbo_compromise",effects:{audience:50000,money:25000,reputation:40,wellbeing:0}},
+{label:"Walk Away",desc:"Your vision matters more.",next:"victory_walked_away_hbo",effects:{audience:5000,money:-2000,reputation:35,wellbeing:20}},
+{label:"Counter-Propose",desc:"Find middle ground.",next:"victory_counter_hbo",effects:{audience:30000,money:15000,reputation:42,wellbeing:10}}
+]},
+
+// Victory scenes
+victory_rebuilt:{year:5,type:"VICTORY",title:"The Phoenix",mood:"triumphant",victory:true,
+text:`You started over. You built it again.
+
+<strong>22,000 subscribers. A book deal. Teaching gigs.</strong>
+
+Not what you had before. But it's yours. Earned twice over.`},
+
+victory_reinvented:{year:5,type:"VICTORY",title:"The New Form",mood:"triumphant",victory:true,
+text:`You left video essays behind. Now you make... something else.
+
+<strong>Short documentaries. Interactive pieces. Installations.</strong>
+
+The form evolved. So did you.`},
+
+victory_netflix:{year:5,type:"VICTORY",title:"The Platform Player",mood:"triumphant",victory:true,
+text:`The Netflix deal changed everything. Full-time creating. Benefits. A budget.
+
+<strong>You're not independent anymore. But you're stable.</strong>
+
+Your videos reach millions. The comments section is terrifying. But you made it.`},
+
+victory_indie_peak:{year:5,type:"VICTORY",title:"The Independent Star",mood:"triumphant",victory:true,
+text:`You turned down the big deal. Stayed independent.
+
+<strong>90,000 subscribers. Full creative control. Enough money to live.</strong>
+
+You proved it could be done. Your way.`},
+
+victory_negotiated:{year:5,type:"VICTORY",title:"The Best of Both",mood:"triumphant",victory:true,
+text:`You negotiated hard. Got the money AND the freedom.
+
+<strong>The deal gives you resources without owning your soul.</strong>
+
+It took five years to get leverage like this. You used it wisely.`},
+
+victory_enough:{year:5,type:"VICTORY",title:"Enough",mood:"calm",victory:true,
+text:`You accepted "enough." It wasn't giving up. It was growing up.
+
+<strong>60,000 subscribers. Time for other things. A life outside the screen.</strong>
+
+Some might call it settling. You call it wisdom.`},
+
+victory_activist:{year:5,type:"VICTORY",title:"The Fighter",mood:"triumphant",victory:true,
+text:`You fought for creator rights. Won some battles. Lost others.
+
+<strong>The industry is slightly better because you exist.</strong>
+
+You stopped making videos. You started making change.`},
+
+victory_returned_creating:{year:5,type:"VICTORY",title:"Back to Basics",mood:"calm",victory:true,
+text:`You handed off the activism. Returned to making things.
+
+<strong>Your first video in 18 months. 340,000 views.</strong>
+
+The audience was waiting. They welcomed you home.`},
+
+victory_corporate:{year:5,type:"VICTORY",title:"The Professional",mood:"calm",victory:true,
+text:`You're a professional video essayist. It's a job now.
+
+<strong>Stable. Well-paid. Respected.</strong>
+
+Not what you dreamed of. But maybe dreams were always naive.`},
+
+victory_burned_down:{year:5,type:"VICTORY",title:"The Escape",mood:"hopeful",victory:true,
+text:`You walked away from $120,000/year to make your own things again.
+
+<strong>It might be the stupidest decision you ever made.</strong>
+
+Or the bravest. Time will tell.`},
+
+victory_left_academia:{year:5,type:"VICTORY",title:"Beyond the Tower",mood:"hopeful",victory:true,
+text:`Academia rejected you. The internet embraced you.
+
+<strong>85,000 subscribers. A Patreon that pays more than your professor salary would have.</strong>
+
+Who needs tenure?`},
+
+victory_hbo_compromise:{year:5,type:"VICTORY",title:"The Mainstream",mood:"triumphant",victory:true,
+text:`Your HBO documentary premiered to 2.3 million viewers.
+
+<strong>It wasn't exactly your vision. But it was close enough.</strong>
+
+You're a real filmmaker now. Whatever that means.`},
+
+victory_walked_away_hbo:{year:5,type:"VICTORY",title:"The Purist",mood:"calm",victory:true,
+text:`You said no to HBO. Made your film independently instead.
+
+<strong>12,000 views on Vimeo. Critical praise. No regrets.</strong>
+
+Your film. Your way. Always.`},
+
+
+// Year 3 Academic scenes
+y3_ac_safe:{year:3,type:"Academic · Year Three",title:"The Reliable Scholar",mood:"calm",
+text:`Your project delivered exactly what you promised. The committee is pleased.
+
+<strong>But you know: you played it safe.</strong>`,
+choices:[
+{label:"Build on the Foundation",desc:"Security now. Risks later.",next:"y4_ac_foundation",effects:{audience:400,money:5000,reputation:28,wellbeing:10}},
+{label:"Next Project: Go Bold",desc:"You've earned the right.",next:"y4_ac_bold",effects:{audience:800,money:4000,reputation:35,wellbeing:5}}
+]},
+
+y3_ac_bold:{year:3,type:"Academic · Year Three",title:"The Breakthrough",mood:"triumphant",
+text:`Your experimental approach won an award. Three conference invitations.
+
+<strong>The risk paid off.</strong>`,
+choices:[
+{label:"Mentor the Next Generation",desc:"Pay it forward.",next:"y4_ac_mentor",effects:{audience:600,money:4000,reputation:40,wellbeing:15}},
+{label:"Push Even Further",desc:"The field is watching.",next:"y4_ac_push_limits",effects:{audience:1000,money:3000,reputation:48,wellbeing:-5}}
+]},
+
+y3_ac_job_market:{year:3,type:"Academic · Year Three",title:"The Job Market",mood:"tense",
+text:`You applied to 23 positions. Interviewed for 4.
+
+<strong>Three rejections. One offer—in a city you've never wanted to live in.</strong>`,
+choices:[
+{label:"Take the Job",desc:"Beggars can't be choosers.",next:"y4_ac_unwanted_city",effects:{audience:300,money:5000,reputation:25,wellbeing:-15}},
+{label:"Decline and Keep Looking",desc:"Something better will come.",next:"y4_ac_kept_looking",effects:{audience:200,money:-1000,reputation:20,wellbeing:-8}}
+]},
+
+y3_ac_curator:{year:3,type:"Academic · Year Three",title:"The Field Builder",mood:"hopeful",
+text:`Three workshops organized. One special issue edited.
+
+<strong>Your fingerprints are everywhere in the field.</strong>`,
+choices:[
+{label:"Embrace the Curatorial Identity",desc:"Building the field IS your practice.",next:"y4_ac_curator_identity",effects:{audience:600,money:3000,reputation:42,wellbeing:10}},
+{label:"Carve Out Time for Personal Work",desc:"You're losing yourself in service.",next:"y4_ac_personal_time",effects:{audience:400,money:2000,reputation:35,wellbeing:18}}
+]},
+
+y3_ac_practice:{year:3,type:"Academic · Year Three",title:"The Return to Making",mood:"hopeful",
+text:`The workshop conversations keep echoing. You've started something new—your most personal work yet.`,
+choices:[
+{label:"Complete the Personal Project",desc:"Vulnerability is strength.",next:"y4_ac_vulnerable_work",effects:{audience:500,money:-500,reputation:30,wellbeing:18}},
+{label:"Collaborate to Share the Risk",desc:"Invite others into the project.",next:"y4_ac_collaborative",effects:{audience:700,money:-300,reputation:28,wellbeing:12}}
+]},
+
+y3_ac_artworld:{year:3,type:"Academic · Year Three",title:"The Gallery Turn",mood:"hopeful",
+text:`Your piece screens in gallery settings now.
+
+<strong>An artist residency offers you three months in Berlin.</strong>`,
+choices:[
+{label:"Take the Residency",desc:"When will this chance come again?",next:"y4_ac_berlin",effects:{audience:400,money:2000,reputation:32,wellbeing:18}},
+{label:"Decline for Job Security",desc:"You can't risk your position.",next:"y4_ac_declined_berlin",effects:{audience:250,money:3000,reputation:22,wellbeing:-5}}
+]},
+
+y3_ac_fight:{year:3,type:"Academic · Year Three",title:"The Boundary Warrior",mood:"tense",
+text:`Third revision finally accepted. Peer reviewers were split.
+
+<strong>The doors you opened will stay open for others.</strong>`,
+choices:[
+{label:"Keep Pushing Boundaries",desc:"The unconvinced will come around.",next:"y4_ac_pioneer",effects:{audience:500,money:2000,reputation:38,wellbeing:5}},
+{label:"Consolidate Your Gains",desc:"You've proven enough.",next:"y4_ac_consolidated",effects:{audience:350,money:3000,reputation:32,wellbeing:12}}
+]},
+
+y3_ac_split:{year:3,type:"Academic · Year Three",title:"The Split Practice",mood:"tense",
+text:`Art shows. Academic publications. Neither world fully claims you.`,
+choices:[
+{label:"Choose Academia",desc:"Stability and legitimacy.",next:"y4_ac_chose_academy",effects:{audience:300,money:4000,reputation:30,wellbeing:8}},
+{label:"Choose Art World",desc:"Freedom and uncertainty.",next:"y4_ac_chose_art",effects:{audience:600,money:1500,reputation:28,wellbeing:12}}
+]},
+
+y3_ac_phd_path:{year:3,type:"Academic · Year Three",title:"The PhD Decision",mood:"tense",
+text:`You got into a PhD program. Fully funded for four years.
+
+<strong>But you're 32 years old. Is this the right move?</strong>`,
+choices:[
+{label:"Enroll in the PhD",desc:"Commit to the scholarly path.",next:"y4_ac_phd",effects:{audience:150,money:2000,reputation:25,wellbeing:-5}},
+{label:"Decline and Stay Independent",desc:"Four years is too long.",next:"y4_ac_declined_phd",effects:{audience:400,money:-500,reputation:15,wellbeing:12}}
+]},
+
+y3_ac_hybrid_project:{year:3,type:"Academic · Year Three",title:"The Hybrid Project",mood:"hopeful",
+text:`Your grant-funded project works both academically and publicly.
+
+<strong>45,000 views on YouTube. Published in a respected journal.</strong>`,
+choices:[
+{label:"Embrace the Public Scholar Role",desc:"This is the future.",next:"y4_ac_public_scholar",effects:{audience:8000,money:4000,reputation:38,wellbeing:10}},
+{label:"Retreat to Pure Scholarship",desc:"The YouTube attention is distracting.",next:"y4_ac_pure_scholar",effects:{audience:1000,money:3500,reputation:32,wellbeing:8}}
+]},
+
+// Year 3 Festival scenes
+y3_fest_berlin:{year:3,type:"Festival · Year Three",title:"The Berlinale Dream",mood:"tense",
+text:`Your film screens at Berlinale Forum. Major festival.
+
+<strong>You maxed out two credit cards to get here.</strong>`,
+choices:[
+{label:"Sign with a Sales Agent",desc:"Finally, someone who can help.",next:"y4_fest_repped",effects:{audience:600,money:-1500,reputation:38,wellbeing:5}},
+{label:"Your Debt Catches Up",desc:"Credit card company calls during the festival.",next:"y4_fest_debt_crisis",effects:{audience:400,money:-4000,reputation:35,wellbeing:-20}}
+]},
+
+y3_fest_stabilize:{year:3,type:"Festival · Year Three",title:"The Stabilized Artist",mood:"calm",
+text:`Job secured. Films on the side. The pressure is off.`,
+choices:[
+{label:"Slow and Steady",desc:"One film every two years.",next:"y4_fest_slow",effects:{audience:500,money:5000,reputation:25,wellbeing:22}},
+{label:"Use Stability to Take Risks",desc:"Now you can experiment.",next:"y4_fest_experimental",effects:{audience:800,money:3500,reputation:32,wellbeing:15}}
+]},
+
+y3_fest_online_pivot:{year:3,type:"Festival · Year Three",title:"The Digital Turn",mood:"hopeful",
+text:`You put everything online. 85,000 total views across your films.`,
+choices:[
+{label:"License to a Platform",desc:"Steady passive income.",next:"y4_fest_licensed",effects:{audience:4000,money:3500,reputation:22,wellbeing:12}},
+{label:"Keep Everything Free",desc:"Accessibility matters more.",next:"y4_fest_free_access",effects:{audience:6000,money:500,reputation:28,wellbeing:10}}
+]},
+
+y3_fest_grant_result:{year:3,type:"Festival · Year Three",title:"The Grant Decision",mood:"tense",
+text:`The big grant came through. €25,000. You're moving to Leipzig for six months.`,
+choices:[
+{label:"Embrace the Isolation",desc:"Loneliness breeds creativity.",next:"y4_fest_isolated_creation",effects:{audience:400,money:7000,reputation:35,wellbeing:-12}},
+{label:"Build Community Quickly",desc:"Find other artists.",next:"y4_fest_found_community",effects:{audience:600,money:6500,reputation:32,wellbeing:10}}
+]},
+
+// Year 4 Academic scenes
+y4_ac_foundation:{year:4,type:"Academic · Year Four",title:"Building on Foundation",mood:"calm",
+text:`Security first. Your conservative approach paid off.`,
+choices:[
+{label:"Take Risks Now",desc:"The foundation supports experiments.",next:"victory_safe_career",effects:{audience:600,money:5000,reputation:35,wellbeing:15}},
+{label:"Keep Building Safely",desc:"Why fix what works?",next:"victory_safe_career",effects:{audience:400,money:6000,reputation:30,wellbeing:20}}
+]},
+
+y4_ac_bold:{year:4,type:"Academic · Year Four",title:"The Bold Scholar",mood:"hopeful",
+text:`Your experimental work continues to gain recognition.`,
+choices:[
+{label:"Keep Pushing",desc:"The field is moving with you.",next:"victory_bold_consolidation",effects:{audience:1000,money:4000,reputation:45,wellbeing:10}},
+{label:"Consolidate",desc:"Bank the reputation.",next:"victory_bold_consolidation",effects:{audience:700,money:5000,reputation:40,wellbeing:18}}
+]},
+
+y4_ac_unwanted_city:{year:4,type:"Academic · Year Four",title:"In the Unwanted City",mood:"tense",
+text:`You took the job. The city is everything you feared.
+
+<strong>But the work is good. The students are eager.</strong>`,
+choices:[
+{label:"Make It Home",desc:"Bloom where planted.",next:"victory_made_home",effects:{audience:400,money:6000,reputation:28,wellbeing:10}},
+{label:"Keep Looking Elsewhere",desc:"This is temporary.",next:"victory_made_home",effects:{audience:350,money:5000,reputation:25,wellbeing:-5}}
+]},
+
+y4_ac_kept_looking:{year:4,type:"Academic · Year Four",title:"Still Looking",mood:"tense",
+text:`Another year on the market. More applications. More rejections.`,
+choices:[
+{label:"One More Year",desc:"Persistence or delusion?",next:"victory_indie_scholar",effects:{audience:300,money:-1000,reputation:20,wellbeing:-10}},
+{label:"Leave Academia",desc:"Find another path.",next:"victory_left_academia",effects:{audience:500,money:2000,reputation:15,wellbeing:15}}
+]},
+
+y4_ac_curator_identity:{year:4,type:"Academic · Year Four",title:"The Curator Identity",mood:"hopeful",
+text:`Building the field IS your practice. You've accepted this.`,
+choices:[
+{label:"Embrace This Fully",desc:"Legacy through enabling.",next:"victory_enabler",effects:{audience:700,money:4000,reputation:50,wellbeing:18}}
+]},
+
+y4_ac_personal_time:{year:4,type:"Academic · Year Four",title:"Personal Time Carved",mood:"calm",
+text:`You protected time for your own work. The community understood.`,
+choices:[
+{label:"Maintain Balance",desc:"It's working.",next:"victory_balanced_academic",effects:{audience:600,money:3500,reputation:38,wellbeing:20}}
+]},
+
+y4_ac_vulnerable_work:{year:4,type:"Academic · Year Four",title:"The Vulnerable Work",mood:"hopeful",
+text:`Your personal piece premiered. Critics called it "brave."`,
+choices:[
+{label:"Continue Personal Work",desc:"This is your voice.",next:"victory_personal_voice",effects:{audience:700,money:2500,reputation:40,wellbeing:22}}
+]},
+
+y4_ac_collaborative:{year:4,type:"Academic · Year Four",title:"The Collaboration Published",mood:"hopeful",
+text:`Four voices, one publication. The collaborative model worked.`,
+choices:[
+{label:"More Collaborations",desc:"This is the future.",next:"victory_collaborative_model",effects:{audience:900,money:3000,reputation:42,wellbeing:20}}
+]},
+
+y4_ac_berlin:{year:4,type:"Academic · Year Four",title:"The Berlin Residency",mood:"hopeful",
+text:`Three months in Berlin changed you.`,
+choices:[
+{label:"Apply for More Residencies",desc:"This model works.",next:"victory_residency_life",effects:{audience:600,money:3000,reputation:38,wellbeing:22}}
+]},
+
+y4_ac_declined_berlin:{year:4,type:"Academic · Year Four",title:"Berlin Declined",mood:"calm",
+text:`You stayed for job security. Safe choice.`,
+choices:[
+{label:"No Regrets",desc:"Security matters.",next:"victory_secure_academic",effects:{audience:400,money:5000,reputation:25,wellbeing:15}}
+]},
+
+y4_ac_pioneer:{year:4,type:"Academic · Year Four",title:"The Pioneer Continues",mood:"hopeful",
+text:`You keep pushing. The field slowly follows.`,
+choices:[
+{label:"Keep Pioneering",desc:"Someone has to lead.",next:"victory_pioneer",effects:{audience:800,money:3000,reputation:48,wellbeing:8}}
+]},
+
+y4_ac_consolidated:{year:4,type:"Academic · Year Four",title:"Gains Consolidated",mood:"calm",
+text:`You stopped pushing and started securing.`,
+choices:[
+{label:"Accept This Phase",desc:"Every career has seasons.",next:"victory_seasonal",effects:{audience:500,money:4500,reputation:35,wellbeing:20}}
+]},
+
+y4_ac_chose_academy:{year:4,type:"Academic · Year Four",title:"Academia Chosen",mood:"calm",
+text:`You committed to the academic path.`,
+choices:[
+{label:"Embrace Academia Fully",desc:"This is your world now.",next:"victory_full_academic",effects:{audience:400,money:5500,reputation:35,wellbeing:15}}
+]},
+
+y4_ac_chose_art:{year:4,type:"Academic · Year Four",title:"Art World Chosen",mood:"hopeful",
+text:`You committed to galleries. Academia faded.`,
+choices:[
+{label:"Embrace Art World Fully",desc:"This is your world now.",next:"victory_full_artist",effects:{audience:600,money:3000,reputation:38,wellbeing:20}}
+]},
+
+y4_ac_phd:{year:4,type:"Academic · Year Four",title:"The PhD Years",mood:"tense",
+text:`Two years into the PhD. The work is demanding but meaningful.`,
+choices:[
+{label:"Complete the PhD",desc:"See it through.",next:"victory_phd_complete",effects:{audience:300,money:2500,reputation:35,wellbeing:5}}
+]},
+
+y4_ac_declined_phd:{year:4,type:"Academic · Year Four",title:"PhD Declined",mood:"calm",
+text:`You stayed independent. Right choice? Time will tell.`,
+choices:[
+{label:"No Regrets",desc:"Independence matters.",next:"victory_indie_scholar",effects:{audience:600,money:2500,reputation:22,wellbeing:20}}
+]},
+
+y4_ac_public_scholar:{year:4,type:"Academic · Year Four",title:"The Public Scholar",mood:"hopeful",
+text:`YouTube + academia. The model is working.`,
+choices:[
+{label:"Argue for Your Model",desc:"The field needs to evolve.",next:"y5_argued_model",effects:{audience:10000,money:5000,reputation:42,wellbeing:8}},
+{label:"Play Their Game",desc:"Emphasize traditional outputs.",next:"y5_played_game",effects:{audience:6000,money:6000,reputation:35,wellbeing:5}}
+]},
+
+y4_ac_pure_scholar:{year:4,type:"Academic · Year Four",title:"The Pure Scholar",mood:"calm",
+text:`You pulled back from YouTube. Pure scholarship again.`,
+choices:[
+{label:"Accept This Trade",desc:"Impact isn't just views.",next:"victory_pure_scholar",effects:{audience:800,money:4500,reputation:40,wellbeing:15}}
+]},
+
+// Year 4 Festival scenes
+y4_fest_debt_crisis:{year:4,type:"Festival · Year Four",title:"Debt Crisis",mood:"dark",
+text:`The credit card company called during Berlinale.`,
+choices:[
+{label:"Face the Debt",desc:"Get real about money.",next:"victory_patient_artist",effects:{audience:400,money:-2000,reputation:30,wellbeing:-5}},
+{label:"One More Festival Season",desc:"The breakthrough is coming.",next:"gameover_bankrupt",effects:{audience:600,money:-6000,reputation:35,wellbeing:-25}}
+]},
+
+y4_fest_slow:{year:4,type:"Festival · Year Four",title:"Slow and Steady",mood:"calm",
+text:`One film every two years. Each one matters.`,
+choices:[
+{label:"Maintain This Pace",desc:"Patience is an art form.",next:"victory_patient_artist",effects:{audience:800,money:5000,reputation:35,wellbeing:25}}
+]},
+
+y4_fest_experimental:{year:4,type:"Festival · Year Four",title:"The Experimental Turn",mood:"hopeful",
+text:`Your truly strange film divides critics.`,
+choices:[
+{label:"Lean Into Controversy",desc:"Polarization is attention.",next:"victory_subversive",effects:{audience:1500,money:2000,reputation:35,wellbeing:10}}
+]},
+
+y4_fest_licensed:{year:4,type:"Festival · Year Four",title:"Platform Licensed",mood:"hopeful",
+text:`Your films are on a streaming platform. Passive income.`,
+choices:[
+{label:"License More",desc:"Build the catalog.",next:"victory_licensed_catalog",effects:{audience:5000,money:4000,reputation:25,wellbeing:18}}
+]},
+
+y4_fest_free_access:{year:4,type:"Festival · Year Four",title:"Free Access",mood:"calm",
+text:`All your films are free online.`,
+choices:[
+{label:"Stay Free Forever",desc:"Accessibility is the point.",next:"victory_free_forever",effects:{audience:8000,money:1000,reputation:32,wellbeing:20}}
+]},
+
+y4_fest_isolated_creation:{year:4,type:"Festival · Year Four",title:"Isolated Creation",mood:"tense",
+text:`Six months in Leipzig. The isolation was brutal but productive.`,
+choices:[
+{label:"Release and Rest",desc:"You gave everything.",next:"victory_patient_artist",effects:{audience:2000,money:4000,reputation:40,wellbeing:10}}
+]},
+
+y4_fest_found_community:{year:4,type:"Festival · Year Four",title:"Community Found",mood:"hopeful",
+text:`You found other artists in Leipzig. Collaborations sparked.`,
+choices:[
+{label:"Maintain These Connections",desc:"Community sustains.",next:"victory_found_community",effects:{audience:2000,money:5000,reputation:38,wellbeing:22}}
+]},
+
+y4_fest_funded_compromise:{year:4,type:"Festival · Year Four",title:"Funded Compromise",mood:"tense",
+text:`The production company got what they wanted. Your film is... different.`,
+choices:[
+{label:"Accept the Compromise",desc:"It's still your film.",next:"victory_compromised_success",effects:{audience:5000,money:10000,reputation:22,wellbeing:10}}
+]},
+
+y4_fest_stayed_lofi:{year:4,type:"Festival · Year Four",title:"Stayed Lo-Fi",mood:"calm",
+text:`You declined the money. Made another no-budget piece.`,
+choices:[
+{label:"Embrace Lo-Fi Identity",desc:"Limitation as aesthetic.",next:"victory_lofi_master",effects:{audience:3000,money:2000,reputation:35,wellbeing:22}}
+]},
+
+y4_fest_negotiated_control:{year:4,type:"Festival · Year Four",title:"Control Negotiated",mood:"hopeful",
+text:`Money AND creative control. The best of both worlds.`,
+choices:[
+{label:"Set This as Standard",desc:"Never accept less.",next:"victory_controlled_funding",effects:{audience:3500,money:8000,reputation:38,wellbeing:18}}
+]},
+
+y4_fest_adapted:{year:4,type:"Festival · Year Four",title:"Adapted to Budget",mood:"calm",
+text:`$11,200 wasn't enough. You made it work anyway.`,
+choices:[
+{label:"Release the Constrained Film",desc:"It is what it is.",next:"victory_lofi_master",effects:{audience:2500,money:3000,reputation:28,wellbeing:15}}
+]},
+
+y4_fest_cancelled:{year:4,type:"Festival · Year Four",title:"Campaign Cancelled",mood:"dark",
+text:`You cancelled the crowdfund. Refunds issued.`,
+choices:[
+{label:"Try Again Later",desc:"Better timing next time.",next:"victory_patient_artist",effects:{audience:500,money:-500,reputation:18,wellbeing:10}}
+]},
+
+y4_fest_self_funded:{year:4,type:"Festival · Year Four",title:"Self-Funded",mood:"tense",
+text:`You went into debt to complete your vision. The film is done.`,
+choices:[
+{label:"Hope It Pays Off",desc:"Festival success could change everything.",next:"victory_compromised_success",effects:{audience:2000,money:-2000,reputation:30,wellbeing:5}}
+]},
+
+y4_fest_branded_path:{year:4,type:"Festival · Year Four",title:"The Branded Path",mood:"tense",
+text:`Branded content pays well. Your festival friends judge you.`,
+choices:[
+{label:"Keep Taking Branded Work",desc:"Money is freedom.",next:"victory_branded_filmmaker",effects:{audience:3000,money:15000,reputation:10,wellbeing:12}}
+]},
+
+y4_fest_declined_brand:{year:4,type:"Festival · Year Four",title:"Brand Declined",mood:"calm",
+text:`You said no. Stayed poor. Stayed artist.`,
+choices:[
+{label:"No Regrets",desc:"Integrity is everything.",next:"victory_integrity_fest",effects:{audience:1500,money:500,reputation:30,wellbeing:22}}
+]},
+
+y4_fest_subversive_brand:{year:4,type:"Festival · Year Four",title:"Subversive Brand Work",mood:"hopeful",
+text:`Your critical branded documentary was... unexpected.`,
+choices:[
+{label:"Keep Subverting",desc:"This is its own art form.",next:"victory_subversive",effects:{audience:5000,money:10000,reputation:28,wellbeing:18}}
+]},
+
+y4_fest_streaming_exclusive:{year:4,type:"Festival · Year Four",title:"Streaming Exclusive",mood:"hopeful",
+text:`Netflix got exclusive streaming rights.`,
+choices:[
+{label:"Embrace Streaming",desc:"This is the future.",next:"victory_streaming",effects:{audience:30000,money:8000,reputation:25,wellbeing:15}}
+]},
+
+y4_fest_protected_theatrical:{year:4,type:"Festival · Year Four",title:"Theatrical Protected",mood:"calm",
+text:`You protected the theatrical window. Festivals first.`,
+choices:[
+{label:"Maintain Theatrical Priority",desc:"The cinema experience matters.",next:"victory_theatrical",effects:{audience:5000,money:3000,reputation:38,wellbeing:18}}
+]},
+
+y4_fest_windowing:{year:4,type:"Festival · Year Four",title:"The Windowing Strategy",mood:"hopeful",
+text:`Festivals first, then streaming, then free. The strategy worked.`,
+choices:[
+{label:"Standardize This Model",desc:"It's the template now.",next:"victory_windowed",effects:{audience:15000,money:5000,reputation:35,wellbeing:15}}
+]},
+
+// Year 5 scenes
+y5_forced_personal:{year:5,type:"Year Five · Final Chapter",title:"Forced Personal Project",mood:"hopeful",
+text:`You carved out time from institutional work. Made something yours.`,
+choices:[
+{label:"This Is the Balance",desc:"Some for them, some for you.",next:"victory_negotiated_freedom",effects:{audience:12000,money:15000,reputation:42,wellbeing:20}}
+]},
+
+y5_argued_model:{year:5,type:"Year Five · Final Chapter",title:"Argued Your Model",mood:"tense",
+text:`You made the case for public scholarship. The tenure committee listened.`,
+choices:[
+{label:"You Won",desc:"The model worked.",next:"victory_tenure_won",effects:{audience:10000,money:8000,reputation:48,wellbeing:20}}
+]},
+
+y5_played_game:{year:5,type:"Year Five · Final Chapter",title:"Played Their Game",mood:"calm",
+text:`You emphasized traditional outputs. The committee was satisfied.`,
+choices:[
+{label:"Worth It",desc:"Now you can take risks.",next:"victory_tenure_strategic",effects:{audience:8000,money:10000,reputation:42,wellbeing:15}}
+]},
+
+// Add more connecting scenes for Year 4-5 transitions
+y5_left_creating:{year:5,type:"VICTORY",title:"The Quiet Life",mood:"calm",victory:true,
+text:`You left the creator economy. Found peace elsewhere.
+
+<strong>A normal job. Normal hours. No comments section.</strong>
+
+Sometimes you miss it. But mostly, you're happier.`},
+
+y5_wrote_memoir:{year:5,type:"Year Five · Final Chapter",title:"The Memoir",mood:"hopeful",
+text:`Your book about failing in the creator economy became a modest hit.
+
+<strong>"Burned Out at 30: My Five Years Making Video Essays"</strong>
+
+The irony isn't lost on you: your failure made you successful.`,
+choices:[
+{label:"Use the Platform to Start Again",desc:"This time with wisdom.",next:"victory_memoir_comeback",effects:{audience:15000,money:8000,reputation:25,wellbeing:15}},
+{label:"Stay in Writing",desc:"Making videos broke you once.",next:"victory_became_writer",effects:{audience:8000,money:10000,reputation:28,wellbeing:22}},
+{label:"Help Other Creators",desc:"Prevent them from making your mistakes.",next:"victory_creator_coach",effects:{audience:5000,money:12000,reputation:30,wellbeing:18}}
+]},
+
+y5_debt_free:{year:5,type:"Year Five · Final Chapter",title:"Free at Last",mood:"calm",
+text:`The debt is paid. You owe nothing.
+
+<strong>But you're exhausted. The joy you once had is... complicated now.</strong>`,
+choices:[
+{label:"Take a Year Off",desc:"You've earned it.",next:"victory_sabbatical",effects:{audience:-5000,money:-3000,reputation:15,wellbeing:35}},
+{label:"Restart with Fresh Eyes",desc:"The burden is lifted. See what you can build.",next:"victory_fresh_start_earned",effects:{audience:8000,money:2000,reputation:18,wellbeing:20}},
+{label:"Quit While You're Ahead",desc:"Get out before the cycle repeats.",next:"victory_quit_ahead",effects:{audience:0,money:5000,reputation:12,wellbeing:25}}
+]},
+
+// Additional victories
+victory_memoir_comeback:{year:5,type:"VICTORY",title:"The Comeback",mood:"triumphant",victory:true,
+text:`Your memoir led to a podcast led to a new channel.
+
+<strong>This time, you knew the traps. You avoided them.</strong>
+
+55,000 subscribers. Boundaries. A therapist.`},
+
+victory_became_writer:{year:5,type:"VICTORY",title:"The Writer",mood:"calm",victory:true,
+text:`You write about film now. Words instead of images.
+
+<strong>Three books published. A magazine column.</strong>
+
+You don't miss the algorithm. You don't miss the comments.`},
+
+victory_creator_coach:{year:5,type:"VICTORY",title:"The Guide",mood:"hopeful",victory:true,
+text:`You coach new creators now. Teach them what not to do.
+
+<strong>Your failure was expensive. Their education doesn't have to be.</strong>
+
+Impact through prevention.`},
+
+victory_sabbatical:{year:5,type:"VICTORY",title:"The Rest",mood:"calm",victory:true,
+text:`You took a year off. Traveled. Read. Slept.
+
+<strong>The internet survived without you. So did you.</strong>
+
+Maybe you'll come back. Maybe you won't. Either way, you're okay.`},
+
+victory_fresh_start_earned:{year:5,type:"VICTORY",title:"Earned Restart",mood:"hopeful",victory:true,
+text:`Free from debt, you built something new. Smaller. Sustainable.
+
+<strong>28,000 subscribers. Enough money. Good mental health.</strong>
+
+You learned the hard way. But you learned.`},
+
+victory_quit_ahead:{year:5,type:"VICTORY",title:"The Exit",mood:"calm",victory:true,
+text:`You got out. On your terms.
+
+<strong>No dramatic flameout. Just a quiet goodbye.</strong>
+
+You made things. People watched them. That's more than most can say.`}
+,
+
+// Year 4 YouTube scenes that lead to victory
+y4_yt_boundaries:{year:4,type:"YouTube · Year Four",title:"Boundaries Set",mood:"calm",text:"You set clear boundaries. Your audience learned to respect them.",choices:[{label:"Continue to Year Five",desc:"See it through.",next:"victory_balanced",effects:{audience:8000,money:3000,reputation:25,wellbeing:25}}]},
+y4_yt_mysterious:{year:4,type:"YouTube · Year Four",title:"The Disappearance",mood:"calm",text:"You went silent. The work spoke for itself.",choices:[{label:"Let mystery be your brand",desc:"Absence creates desire.",next:"victory_mysterious",effects:{audience:15000,money:2500,reputation:28,wellbeing:28}}]},
+y4_yt_trilogy_trap:{year:4,type:"YouTube · Year Four",title:"Trilogy Trap",mood:"tense",text:"Part 3 expectations are impossibly high.",choices:[{label:"Deliver anyway",desc:"You made a promise.",next:"victory_trilogy_complete",effects:{audience:25000,money:5000,reputation:35,wellbeing:-10}},{label:"Cancel it",desc:"Health first.",next:"victory_cancelled_trilogy",effects:{audience:-3000,money:1000,reputation:20,wellbeing:20}}]},
+y4_yt_advocate:{year:4,type:"YouTube · Year Four",title:"The Advocate",mood:"hopeful",text:"You speak for creator rights now.",choices:[{label:"Embrace advocacy",desc:"Someone has to fight.",next:"victory_activist",effects:{audience:15000,money:3000,reputation:40,wellbeing:10}}]},
+y4_yt_return_films:{year:4,type:"YouTube · Year Four",title:"Back to Movies",mood:"calm",text:"You're making film videos again.",choices:[{label:"Stay focused",desc:"This is what you love.",next:"victory_returned_home",effects:{audience:10000,money:3000,reputation:25,wellbeing:20}}]},
+y4_yt_strategic_brand:{year:4,type:"YouTube · Year Four",title:"Strategic Partnerships",mood:"hopeful",text:"Only brands that align with your values.",choices:[{label:"Accept aligned partnership",desc:"This fits.",next:"victory_aligned_partnership",effects:{audience:12000,money:8000,reputation:28,wellbeing:15}}]},
+y4_yt_redemption:{year:4,type:"YouTube · Year Four",title:"The Redemption",mood:"hopeful",text:"Trust is slowly rebuilding.",choices:[{label:"Stay the course",desc:"Prove it wasn't PR.",next:"victory_redeemed",effects:{audience:6000,money:2000,reputation:25,wellbeing:18}}]},
+y4_yt_commercial:{year:4,type:"YouTube · Year Four",title:"Commercial Path",mood:"tense",text:"Branded content pays well.",choices:[{label:"Accept this life",desc:"Money is freedom.",next:"victory_commercial",effects:{audience:15000,money:12000,reputation:12,wellbeing:10}}]},
+y4_yt_managed_community:{year:4,type:"YouTube · Year Four",title:"Managed Community",mood:"calm",text:"Your community manager handles Discord.",choices:[{label:"Accept the distance",desc:"Boundaries are healthy.",next:"victory_balanced",effects:{audience:8000,money:3000,reputation:22,wellbeing:22}}]},
+y4_yt_bounded_community:{year:4,type:"YouTube · Year Four",title:"Bounded Community",mood:"calm",text:"Stricter rules. Better community.",choices:[{label:"Maintain boundaries",desc:"Quality over quantity.",next:"victory_balanced",effects:{audience:6000,money:2500,reputation:22,wellbeing:22}}]},
+y4_yt_released_anyway:{year:4,type:"YouTube · Year Four",title:"Released Despite Competition",mood:"tense",text:"Your version had depth theirs lacked.",choices:[{label:"Let work speak",desc:"Quality wins.",next:"victory_quality_wins",effects:{audience:15000,money:3000,reputation:28,wellbeing:15}}]},
+y4_yt_delayed_release:{year:4,type:"YouTube · Year Four",title:"Delayed Release",mood:"calm",text:"You reframed your video.",choices:[{label:"Release it",desc:"Your take deserves to exist.",next:"victory_sustainable",effects:{audience:10000,money:2500,reputation:25,wellbeing:15}}]},
+y4_yt_response_video:{year:4,type:"YouTube · Year Four",title:"Response Video",mood:"tense",text:"A conversation between essays.",choices:[{label:"Commit to the concept",desc:"This is interesting.",next:"victory_evolved",effects:{audience:18000,money:2000,reputation:25,wellbeing:8}}]},
+y4_yt_consistent:{year:4,type:"YouTube · Year Four",title:"Consistent Path",mood:"calm",text:"Same pace. Same quality.",choices:[{label:"Accept the plateau",desc:"Not everyone needs to grow.",next:"victory_plateau",effects:{audience:5000,money:3000,reputation:20,wellbeing:22}}]},
+y4_yt_risky_move:{year:4,type:"YouTube · Year Four",title:"Risk Taken",mood:"tense",text:"Your experimental video divided opinions.",choices:[{label:"Double down",desc:"The confused will catch up.",next:"victory_evolved",effects:{audience:8000,money:2000,reputation:25,wellbeing:12}}]},
+y4_yt_collab_attempt:{year:4,type:"YouTube · Year Four",title:"The Collaboration",mood:"hopeful",text:"Their audience discovered you.",choices:[{label:"Pursue more collabs",desc:"The exposure helps.",next:"victory_diversified",effects:{audience:15000,money:2500,reputation:22,wellbeing:10}}]},
+y4_yt_hobby_mode:{year:4,type:"YouTube · Year Four",title:"Hobby Channel",mood:"calm",text:"Videos when you feel like it.",choices:[{label:"Accept hobby status",desc:"There's freedom in this.",next:"victory_hobby",effects:{audience:3000,money:8000,reputation:12,wellbeing:28}}]},
+y4_yt_protected_time:{year:4,type:"YouTube · Year Four",title:"Protected Time",mood:"calm",text:"Part-time work. Protected video time.",choices:[{label:"Maintain balance",desc:"It's working.",next:"victory_balanced",effects:{audience:8000,money:5000,reputation:20,wellbeing:25}}]},
+y4_yt_fulltime_risk:{year:4,type:"YouTube · Year Four",title:"Full-Time Leap",mood:"tense",text:"You quit your job. All in.",choices:[{label:"Push through",desc:"Breakthrough is coming.",next:"victory_indie_peak",effects:{audience:15000,money:-1000,reputation:25,wellbeing:-5}},{label:"Find part-time work",desc:"Be realistic.",next:"victory_balanced",effects:{audience:8000,money:3000,reputation:18,wellbeing:15}}]},
+y4_yt_small_grant:{year:4,type:"YouTube · Year Four",title:"Small Grant",mood:"hopeful",text:"$3,000 isn't much. But it's recognition.",choices:[{label:"Build on success",desc:"Apply for more.",next:"victory_sustainable",effects:{audience:5000,money:3000,reputation:25,wellbeing:12}}]},
+y4_yt_grant_grind:{year:4,type:"YouTube · Year Four",title:"Grant Grind",mood:"tense",text:"Another rejection.",choices:[{label:"Keep applying",desc:"Persistence pays off.",next:"victory_sustainable",effects:{audience:4000,money:2000,reputation:22,wellbeing:-5}},{label:"Give up on grants",desc:"Find another way.",next:"victory_indie_peak",effects:{audience:8000,money:1500,reputation:18,wellbeing:10}}]},
+y4_yt_no_institutions:{year:4,type:"YouTube · Year Four",title:"No Institutions",mood:"calm",text:"Audience support only.",choices:[{label:"Build the audience",desc:"They're your patrons.",next:"victory_indie_peak",effects:{audience:12000,money:2500,reputation:22,wellbeing:15}}]},
+y4_yt_archive_merge:{year:4,type:"YouTube · Year Four",title:"Archive Collaboration",mood:"hopeful",text:"Professional production value.",choices:[{label:"Formalize partnership",desc:"This could be ongoing.",next:"victory_balanced_commissions",effects:{audience:20000,money:5000,reputation:35,wellbeing:15}}]},
+y4_yt_separated_lives:{year:4,type:"YouTube · Year Four",title:"Separate Lives",mood:"calm",text:"Work and channel never meet.",choices:[{label:"Maintain separation",desc:"Boundaries protect both.",next:"victory_separate_lives",effects:{audience:8000,money:5000,reputation:18,wellbeing:18}}]},
+y4_yt_footage_conflict:{year:4,type:"YouTube · Year Four",title:"Footage Conflict",mood:"tense",text:"Your boss discovered you've been using archive footage.",choices:[{label:"Apologize and remove",desc:"Keep your job.",next:"victory_balanced",effects:{audience:5000,money:4000,reputation:15,wellbeing:8}},{label:"Quit and go full creator",desc:"This was inevitable.",next:"victory_indie_peak",effects:{audience:10000,money:-2000,reputation:25,wellbeing:10}}]},
+y4_yt_access_lost:{year:4,type:"YouTube · Year Four",title:"Access Revoked",mood:"dark",text:"No more rare footage.",choices:[{label:"Adapt your content",desc:"Find a new angle.",next:"victory_sustainable",effects:{audience:6000,money:3000,reputation:18,wellbeing:10}}]},
+y4_yt_museum:{year:4,type:"YouTube · Year Four",title:"Museum Commission",mood:"hopeful",text:"Your most polished work.",choices:[{label:"Pursue institutional work",desc:"This opens doors.",next:"victory_balanced_commissions",effects:{audience:8000,money:6000,reputation:35,wellbeing:12}}]},
+y4_yt_audience_first:{year:4,type:"YouTube · Year Four",title:"Audience First",mood:"hopeful",text:"The algorithm rewarded you.",choices:[{label:"Keep growing",desc:"Momentum is everything.",next:"victory_momentum",effects:{audience:18000,money:4000,reputation:25,wellbeing:10}}]},
+y4_yt_volume_push:{year:4,type:"YouTube · Year Four",title:"Volume Push",mood:"tense",text:"More videos. Your health doesn't agree.",choices:[{label:"Push through",desc:"Success requires sacrifice.",next:"victory_momentum",effects:{audience:20000,money:5000,reputation:22,wellbeing:-15}},{label:"Pull back",desc:"Listen to your body.",next:"victory_sustainable",effects:{audience:10000,money:3000,reputation:20,wellbeing:18}}]},
+y4_yt_diversified:{year:4,type:"YouTube · Year Four",title:"Diversified Creator",mood:"hopeful",text:"Multiple income streams.",choices:[{label:"Maintain diversity",desc:"Security is worth complexity.",next:"victory_diversified",effects:{audience:12000,money:8000,reputation:25,wellbeing:15}}]},
+y4_yt_retreat:{year:4,type:"YouTube · Year Four",title:"Strategic Retreat",mood:"calm",text:"Part-time work again. Recalibration.",choices:[{label:"Accept this pace",desc:"Sustainable beats impressive.",next:"victory_sustainable",effects:{audience:8000,money:5000,reputation:18,wellbeing:22}}]},
+y4_yt_visiting_prof:{year:4,type:"YouTube · Year Four",title:"Visiting Position",mood:"hopeful",text:"One year teaching.",choices:[{label:"Seek permanent position",desc:"This could be home.",next:"victory_tenure_strategic",effects:{audience:5000,money:6000,reputation:32,wellbeing:10}},{label:"Return to independence",desc:"A year was enough.",next:"victory_indie_peak",effects:{audience:10000,money:3000,reputation:25,wellbeing:18}}]},
+y4_yt_adjunct:{year:4,type:"YouTube · Year Four",title:"Adjunct Life",mood:"tense",text:"Part-time teaching, part-time creating.",choices:[{label:"Choose academia",desc:"Stability over passion.",next:"victory_full_academic",effects:{audience:3000,money:5000,reputation:28,wellbeing:8}},{label:"Choose YouTube",desc:"Freedom over security.",next:"victory_indie_peak",effects:{audience:12000,money:2000,reputation:22,wellbeing:15}}]},
+y4_yt_refused_academy:{year:4,type:"YouTube · Year Four",title:"Academy Refused",mood:"calm",text:"Independence won.",choices:[{label:"Commit to independence",desc:"This is who you are.",next:"victory_indie_peak",effects:{audience:12000,money:3000,reputation:22,wellbeing:20}}]},
+y4_yt_balanced_commissions:{year:4,type:"YouTube · Year Four",title:"Balanced Commissions",mood:"calm",text:"Institutional and personal in harmony.",choices:[{label:"Maintain balance",desc:"This is good.",next:"victory_balanced_commissions",effects:{audience:15000,money:12000,reputation:38,wellbeing:18}}]},
+y4_yt_creative_conflict:{year:4,type:"YouTube · Year Four",title:"Creative Differences",mood:"tense",text:"Your voice vs. their brand.",choices:[{label:"Accept their notes",desc:"Compromise is professional.",next:"victory_balanced_commissions",effects:{audience:18000,money:10000,reputation:30,wellbeing:5}},{label:"Walk away",desc:"Integrity over opportunity.",next:"victory_integrity",effects:{audience:8000,money:2000,reputation:35,wellbeing:22}}]},
+y4_yt_approved_work:{year:4,type:"YouTube · Year Four",title:"Approved Work",mood:"calm",text:"They approved your final cut.",choices:[{label:"Continue partnership",desc:"Trust builds over time.",next:"victory_trusted_partner",effects:{audience:20000,money:12000,reputation:42,wellbeing:18}}]},
+y4_yt_stood_ground:{year:4,type:"YouTube · Year Four",title:"Ground Held",mood:"hopeful",text:"Good money, full creative control.",choices:[{label:"Set this as standard",desc:"No more compromises.",next:"victory_stood_ground",effects:{audience:15000,money:8000,reputation:40,wellbeing:20}}]},
+y4_yt_walked_away:{year:4,type:"YouTube · Year Four",title:"Walked Away",mood:"calm",text:"You said no to Criterion.",choices:[{label:"No regrets",desc:"Integrity is priceless.",next:"victory_integrity",effects:{audience:10000,money:2000,reputation:35,wellbeing:25}}]},
+y4_yt_accepted_small:{year:4,type:"YouTube · Year Four",title:"Accepted Small",mood:"calm",text:"15,000 subscribers. Enough.",choices:[{label:"Contentment",desc:"This is success.",next:"victory_small_success",effects:{audience:5000,money:2500,reputation:25,wellbeing:28}}]},
+y4_yt_strategic_growth:{year:4,type:"YouTube · Year Four",title:"Strategic Growth",mood:"hopeful",text:"One carefully chosen collaboration.",choices:[{label:"Integrate new audience",desc:"Welcome them properly.",next:"victory_sustainable",effects:{audience:15000,money:3000,reputation:25,wellbeing:12}}]},
+y4_yt_dying_niche:{year:4,type:"YouTube · Year Four",title:"Dying Niche",mood:"dark",text:"Fewer people care about Czech cinema.",choices:[{label:"Expand scope",desc:"Cover more than Czech cinema.",next:"victory_evolved",effects:{audience:8000,money:2000,reputation:18,wellbeing:10}},{label:"Stay true",desc:"Go down with the ship.",next:"victory_true_to_niche",effects:{audience:3000,money:1500,reputation:30,wellbeing:22}}]},
+y4_yt_rebuilt:{year:4,type:"YouTube · Year Four",title:"Rebuilt",mood:"hopeful",text:"New channel, better than the first time.",choices:[{label:"Keep building",desc:"Slow and steady.",next:"victory_rebuilt",effects:{audience:10000,money:3000,reputation:18,wellbeing:18}}]},
+y4_yt_short_form:{year:4,type:"YouTube · Year Four",title:"Short Form Pivot",mood:"tense",text:"60-second video essays.",choices:[{label:"Embrace short form",desc:"The medium is evolving.",next:"victory_short_form",effects:{audience:30000,money:2500,reputation:12,wellbeing:10}},{label:"Return to long form",desc:"This isn't why you started.",next:"victory_returned_home",effects:{audience:10000,money:2000,reputation:22,wellbeing:18}}]},
+y4_yt_evolved:{year:4,type:"YouTube · Year Four",title:"Evolved Identity",mood:"hopeful",text:"Not just a film essayist anymore.",choices:[{label:"Accept evolution",desc:"Growth means change.",next:"victory_evolved",effects:{audience:20000,money:4000,reputation:15,wellbeing:15}}]},
+y4_yt_split_identity:{year:4,type:"YouTube · Year Four",title:"Split Identity",mood:"tense",text:"Two channels. Twice the work.",choices:[{label:"Maintain both",desc:"Separation protects brand.",next:"victory_diversified",effects:{audience:15000,money:3000,reputation:20,wellbeing:-5}},{label:"Merge or kill one",desc:"Unsustainable.",next:"victory_sustainable",effects:{audience:12000,money:2500,reputation:18,wellbeing:15}}]},
+y4_yt_returned_home:{year:4,type:"YouTube · Year Four",title:"Returned Home",mood:"calm",text:"Back to film essays.",choices:[{label:"Stay home",desc:"This is where you belong.",next:"victory_returned_home",effects:{audience:12000,money:3000,reputation:28,wellbeing:22}}]},
+y4_yt_patron_strings:{year:4,type:"YouTube · Year Four",title:"Patron Strings",mood:"tense",text:"The money came with expectations.",choices:[{label:"Set boundaries",desc:"Clarify what money means.",next:"victory_sustainable",effects:{audience:8000,money:4000,reputation:25,wellbeing:15}},{label:"Return the money",desc:"Freedom over funding.",next:"victory_pure_indie",effects:{audience:5000,money:-2000,reputation:28,wellbeing:20}}]},
+y4_yt_truly_indie:{year:4,type:"YouTube · Year Four",title:"Truly Independent",mood:"calm",text:"No patrons. No sponsors. Just you.",choices:[{label:"Stay pure",desc:"Independence is non-negotiable.",next:"victory_pure_indie",effects:{audience:10000,money:1500,reputation:30,wellbeing:25}}]},
+y4_yt_advisor:{year:4,type:"YouTube · Year Four",title:"Advisor Role",mood:"hopeful",text:"You help others get funded.",choices:[{label:"Embrace advisory role",desc:"Impact through influence.",next:"victory_advisor",effects:{audience:8000,money:5000,reputation:35,wellbeing:18}}]},
+y4_yt_sabbatical:{year:4,type:"YouTube · Year Four",title:"The Sabbatical",mood:"calm",text:"Three months off.",choices:[{label:"Return refreshed",desc:"Perspective gained.",next:"victory_refreshed",effects:{audience:8000,money:-2000,reputation:22,wellbeing:30}}]},
+y4_yt_lone_wolf:{year:4,type:"YouTube · Year Four",title:"Lone Wolf",mood:"calm",text:"Solo forever.",choices:[{label:"Accept solitude",desc:"Independence means alone.",next:"victory_lone_wolf",effects:{audience:10000,money:3000,reputation:25,wellbeing:18}}]},
+y4_ac_push_limits:{year:4,type:"Academic · Year Four",title:"Pushing Limits",mood:"hopeful",text:"Your experimental work gains recognition.",choices:[{label:"Keep pushing",desc:"The field follows.",next:"victory_pioneer",effects:{audience:1000,money:4000,reputation:48,wellbeing:8}}]},
+y4_yt_fresh_start_mid:{year:4,type:"YouTube · Year Four",title:"Fresh Start",mood:"calm",text:"New projects after setbacks.",choices:[{label:"Move forward",desc:"Don't dwell.",next:"victory_sustainable",effects:{audience:8000,money:2000,reputation:18,wellbeing:15}}]},
+y4_yt_parallel_release:{year:4,type:"YouTube · Year Four",title:"Parallel Release",mood:"calm",text:"Full version on Patreon.",choices:[{label:"Build on this model",desc:"Multiple audiences.",next:"victory_diversified",effects:{audience:6000,money:2500,reputation:20,wellbeing:12}}]},
+
+// Year 5 scenes
+y5_abandoned_project:{year:5,type:"Year Five · Final",title:"Project Abandoned",mood:"dark",text:"You couldn't continue. Sometimes letting go is necessary.",choices:[{label:"Start fresh",desc:"Something new.",next:"victory_fresh_after_loss",effects:{audience:5000,money:2000,reputation:18,wellbeing:15}}]},
+y5_accessible_next:{year:5,type:"Year Five · Final",title:"Accessible Next",mood:"hopeful",text:"Proving you can do both.",choices:[{label:"Complete the transition",desc:"Range as strength.",next:"victory_evolved",effects:{audience:8000,money:3000,reputation:28,wellbeing:18}}]},
+y5_algorithm_shift:{year:5,type:"Year Five · Final",title:"Algorithm Shift",mood:"tense",text:"Views dropped 40% overnight.",choices:[{label:"Adapt",desc:"Platforms change.",next:"victory_sustainable",effects:{audience:5000,money:2000,reputation:20,wellbeing:10}}]},
+y5_balance_broke:{year:5,type:"Year Five · Final",title:"Balance Broke",mood:"dark",text:"Something had to give.",choices:[{label:"Rebuild",desc:"Wiser now.",next:"victory_sustainable",effects:{audience:5000,money:2500,reputation:18,wellbeing:12}}]},
+y5_book_delivered:{year:5,type:"Year Five · Final",title:"Book Delivered",mood:"hopeful",text:"Your book is done.",choices:[{label:"Celebrate",desc:"Writers write.",next:"victory_became_writer",effects:{audience:10000,money:6000,reputation:32,wellbeing:15}}]},
+y5_book_extended:{year:5,type:"Year Five · Final",title:"Book Extended",mood:"calm",text:"Quality takes time.",choices:[{label:"Deliver when ready",desc:"Don't rush.",next:"victory_became_writer",effects:{audience:6000,money:4000,reputation:28,wellbeing:18}}]},
+y5_book_returned:{year:5,type:"Year Five · Final",title:"Book Returned",mood:"calm",text:"You returned the advance.",choices:[{label:"No regrets",desc:"Honesty matters.",next:"victory_sustainable",effects:{audience:4000,money:-1000,reputation:20,wellbeing:20}}]},
+y5_bored_safe:{year:5,type:"Year Five · Final",title:"Bored Safe",mood:"calm",text:"Even you're bored making safe content.",choices:[{label:"Take a risk",desc:"One more time.",next:"victory_sustainable",effects:{audience:6000,money:2500,reputation:18,wellbeing:12}}]},
+y5_calculated_risk:{year:5,type:"Year Five · Final",title:"Calculated Risk",mood:"tense",text:"One carefully calculated risk.",choices:[{label:"Let it play out",desc:"Trust your instincts.",next:"victory_sustainable",effects:{audience:12000,money:3000,reputation:25,wellbeing:12}}]},
+y5_callout:{year:5,type:"Year Five · Final",title:"The Callout",mood:"tense",text:"You called them out publicly.",choices:[{label:"Let truth stand",desc:"Consequences accepted.",next:"victory_sustainable",effects:{audience:10000,money:1000,reputation:22,wellbeing:-8}}]},
+y5_classic_return:{year:5,type:"Year Five · Final",title:"Classic Return",mood:"calm",text:"Back to classic style.",choices:[{label:"Stay classic",desc:"Know your strengths.",next:"victory_returned_home",effects:{audience:10000,money:3000,reputation:22,wellbeing:18}}]},
+y5_collective_died:{year:5,type:"Year Five · Final",title:"Collective Died",mood:"dark",text:"The collective fractured.",choices:[{label:"Go solo again",desc:"Lesson learned.",next:"victory_lone_wolf",effects:{audience:6000,money:2000,reputation:18,wellbeing:12}}]},
+y5_collective_pitch:{year:5,type:"Year Five · Final",title:"Collective Pitch",mood:"hopeful",text:"The TV pitch succeeded.",choices:[{label:"Celebrate together",desc:"Rising tides.",next:"victory_diversified",effects:{audience:20000,money:5000,reputation:30,wellbeing:15}}]},
+y5_confronted_mentee:{year:5,type:"Year Five · Final",title:"Confronted Mentee",mood:"tense",text:"You confronted them privately.",choices:[{label:"Move forward",desc:"Said your piece.",next:"victory_sustainable",effects:{audience:5000,money:3000,reputation:28,wellbeing:10}}]},
+y5_consumed_by_job:{year:5,type:"Year Five · Final",title:"Consumed by Job",mood:"dark",text:"Three years, zero videos.",choices:[{label:"Accept this life",desc:"Security won.",next:"victory_full_academic",effects:{audience:-2000,money:10000,reputation:25,wellbeing:-15}}]},
+y5_controversy:{year:5,type:"Year Five · Final",title:"The Controversy",mood:"tense",text:"Someone made a callout thread.",choices:[{label:"Weather the storm",desc:"This too shall pass.",next:"victory_sustainable",effects:{audience:-2000,money:1000,reputation:15,wellbeing:-10}}]},
+y5_copied:{year:5,type:"Year Five · Final",title:"Copied",mood:"tense",text:"A bigger creator copied your video.",choices:[{label:"Let work speak",desc:"Quality is obvious.",next:"victory_sustainable",effects:{audience:8000,money:2500,reputation:22,wellbeing:8}}]},
+y5_course_competition:{year:5,type:"Year Five · Final",title:"Course Competition",mood:"tense",text:"Everyone's selling courses now.",choices:[{label:"Differentiate",desc:"Your experience is unique.",next:"victory_diversified",effects:{audience:5000,money:6000,reputation:22,wellbeing:10}}]},
+y5_dropped_by_agent:{year:5,type:"Year Five · Final",title:"Dropped by Agent",mood:"dark",text:"Your films aren't commercial enough.",choices:[{label:"Go independent",desc:"Their loss.",next:"victory_indie_peak",effects:{audience:3000,money:2000,reputation:25,wellbeing:12}}]},
+y5_equal_rep:{year:5,type:"Year Five · Final",title:"Equal Representation",mood:"hopeful",text:"Everyone or no one.",choices:[{label:"Hold the line",desc:"Principles matter.",next:"victory_sustainable",effects:{audience:8000,money:2000,reputation:28,wellbeing:15}}]},
+y5_experimental_identity:{year:5,type:"Year Five · Final",title:"Experimental Identity",mood:"hopeful",text:"Experimentation became your brand.",choices:[{label:"Own it",desc:"The confused will catch up.",next:"victory_evolved",effects:{audience:10000,money:2500,reputation:28,wellbeing:15}}]},
+y5_forced_break:{year:5,type:"Year Five · Final",title:"Forced Break",mood:"calm",text:"Mental health couldn't wait.",choices:[{label:"Rest and return",desc:"Health first.",next:"victory_refreshed",effects:{audience:-1000,money:-500,reputation:18,wellbeing:25}}]},
+y5_gallery_path:{year:5,type:"Year Five · Final",title:"Gallery Path",mood:"hopeful",text:"Gallery invitations multiply.",choices:[{label:"Embrace galleries",desc:"Different audience.",next:"victory_full_artist",effects:{audience:3000,money:4000,reputation:38,wellbeing:18}}]},
+y5_indie_educator:{year:5,type:"Year Five · Final",title:"Indie Educator",mood:"hopeful",text:"Courses stay independent.",choices:[{label:"Own your education business",desc:"Keep control.",next:"victory_diversified",effects:{audience:10000,money:12000,reputation:28,wellbeing:18}}]},
+y5_institutional_burnout:{year:5,type:"Year Five · Final",title:"Institutional Burnout",mood:"dark",text:"The commissions feel hollow.",choices:[{label:"Take a break",desc:"Burnout is real.",next:"victory_took_break",effects:{audience:15000,money:12000,reputation:38,wellbeing:15}}]},
+y5_kept_mentoring:{year:5,type:"Year Five · Final",title:"Kept Mentoring",mood:"calm",text:"This happens. Keep mentoring.",choices:[{label:"Continue the work",desc:"Legacy through others.",next:"victory_enabler",effects:{audience:800,money:4000,reputation:40,wellbeing:15}}]},
+y5_less_mentoring:{year:5,type:"Year Five · Final",title:"Less Mentoring",mood:"calm",text:"Protect your energy.",choices:[{label:"Focus on yourself",desc:"Self-care matters.",next:"victory_personal_voice",effects:{audience:600,money:4500,reputation:35,wellbeing:22}}]},
+y5_let_go:{year:5,type:"Year Five · Final",title:"Let It Go",mood:"calm",text:"The work speaks for itself.",choices:[{label:"Move forward",desc:"Don't dwell.",next:"victory_sustainable",effects:{audience:8000,money:2500,reputation:22,wellbeing:18}}]},
+y5_long_form_only:{year:5,type:"Year Five · Final",title:"Long Form Only",mood:"calm",text:"Your strength is long form.",choices:[{label:"Stay long",desc:"Depth over brevity.",next:"victory_sustainable",effects:{audience:10000,money:4000,reputation:28,wellbeing:18}}]},
+y5_maintained_practice:{year:5,type:"Year Five · Final",title:"Maintained Practice",mood:"hopeful",text:"Your identity depends on making.",choices:[{label:"Keep making",desc:"Art sustains.",next:"victory_balanced_academic",effects:{audience:3000,money:5000,reputation:38,wellbeing:15}}]},
+y5_overwhelmed:{year:5,type:"Year Five · Final",title:"Overwhelmed",mood:"tense",text:"The spotlight is too much.",choices:[{label:"Step back",desc:"Not everyone wants fame.",next:"victory_sustainable",effects:{audience:10000,money:2500,reputation:25,wellbeing:10}}]},
+y5_polarizing:{year:5,type:"Year Five · Final",title:"Polarizing",mood:"hopeful",text:"Polarization is attention.",choices:[{label:"Lean into it",desc:"Controversy as brand.",next:"victory_subversive",effects:{audience:5000,money:2000,reputation:35,wellbeing:12}}]},
+y5_prioritized_tenure:{year:5,type:"Year Five · Final",title:"Prioritized Tenure",mood:"tense",text:"Security first. Videos later.",choices:[{label:"Get tenure",desc:"Then take risks.",next:"victory_tenure_strategic",effects:{audience:-500,money:8000,reputation:32,wellbeing:-10}}]},
+y5_private_resolution:{year:5,type:"Year Five · Final",title:"Private Resolution",mood:"calm",text:"Maybe they didn't realize.",choices:[{label:"Accept their response",desc:"Move forward.",next:"victory_sustainable",effects:{audience:5000,money:2000,reputation:20,wellbeing:15}}]},
+y5_rebuilt_community:{year:5,type:"Year Five · Final",title:"Rebuilt Community",mood:"hopeful",text:"The community can heal.",choices:[{label:"Trust again",desc:"Community requires vulnerability.",next:"victory_trusted_again",effects:{audience:8000,money:3000,reputation:28,wellbeing:22}}]},
+y5_reclaimed:{year:5,type:"Year Five · Final",title:"Reclaimed",mood:"hopeful",text:"You released on your own terms.",choices:[{label:"The story is yours",desc:"Narrative reclaimed.",next:"victory_moved_forward",effects:{audience:10000,money:3000,reputation:25,wellbeing:18}}]},
+y5_returned_normal:{year:5,type:"Year Five · Final",title:"Returned Normal",mood:"calm",text:"Back to regular content.",choices:[{label:"Normalcy is good",desc:"Steady wins.",next:"victory_sustainable",effects:{audience:10000,money:3500,reputation:25,wellbeing:18}}]},
+y5_shorts_experiment:{year:5,type:"Year Five · Final",title:"Shorts Experiment",mood:"tense",text:"Adapting to the platform.",choices:[{label:"Find your short form voice",desc:"Evolve or die.",next:"victory_evolved",effects:{audience:20000,money:2500,reputation:18,wellbeing:10}}]},
+y5_slow_career:{year:5,type:"Year Five · Final",title:"Slow Career",mood:"calm",text:"This is how careers are made.",choices:[{label:"Keep building",desc:"Slow and steady.",next:"victory_patient_artist",effects:{audience:3000,money:3500,reputation:38,wellbeing:18}}]},
+y5_sold_courses:{year:5,type:"Year Five · Final",title:"Sold Courses",mood:"hopeful",text:"Cash out. Let them scale.",choices:[{label:"Take the money",desc:"Smart exit.",next:"victory_diversified",effects:{audience:5000,money:35000,reputation:20,wellbeing:15}}]},
+y5_stayed_indie:{year:5,type:"Year Five · Final",title:"Stayed Indie",mood:"calm",text:"You built this. Keep it.",choices:[{label:"Own your business",desc:"Independence forever.",next:"victory_pure_indie",effects:{audience:10000,money:12000,reputation:28,wellbeing:20}}]},
+y5_stayed_safe:{year:5,type:"Year Five · Final",title:"Stayed Safe",mood:"calm",text:"Risks aren't worth it anymore.",choices:[{label:"Accept safety",desc:"Nothing wrong with caution.",next:"victory_sustainable",effects:{audience:6000,money:3500,reputation:18,wellbeing:22}}]},
+y5_tenure_decision:{year:5,type:"Year Five · Final",title:"Tenure Decision",mood:"tense",text:"Apply for tenure track?",choices:[{label:"Apply",desc:"Real stability.",next:"victory_tenure_strategic",effects:{audience:3000,money:5000,reputation:30,wellbeing:10}},{label:"Stay independent",desc:"Academia would swallow you.",next:"victory_indie_peak",effects:{audience:10000,money:3000,reputation:22,wellbeing:18}}]},
+
+// Victory scenes needed
+victory_balanced_academic:{year:5,type:"VICTORY",title:"Balanced Academic",mood:"calm",victory:true,text:"Curatorial work and personal practice in harmony. Service and creation, balanced."},
+victory_bitter_exit:{year:5,type:"VICTORY",title:"Bitter Exit",mood:"tense",victory:true,text:"You told the truth publicly. Free but angry."},
+victory_bold_consolidation:{year:5,type:"VICTORY",title:"Bold Consolidation",mood:"hopeful",victory:true,text:"Known for innovation. Sustained by reliability."},
+victory_branded_filmmaker:{year:5,type:"VICTORY",title:"Branded Filmmaker",mood:"calm",victory:true,text:"Corporate money. Artistic execution. Bills paid."},
+victory_collaborative_model:{year:5,type:"VICTORY",title:"Collaborative Model",mood:"hopeful",victory:true,text:"You proved scholarship can be shared."},
+victory_compromised_success:{year:5,type:"VICTORY",title:"Compromised Success",mood:"calm",victory:true,text:"Success, with asterisks. Better than failure?"},
+victory_controlled_funding:{year:5,type:"VICTORY",title:"Controlled Funding",mood:"hopeful",victory:true,text:"Money with creative control. You cracked the code."},
+victory_counter_hbo:{year:5,type:"VICTORY",title:"Counter-Proposed",mood:"hopeful",victory:true,text:"Middle ground found. Your vision, their resources."},
+victory_enabler:{year:5,type:"VICTORY",title:"The Enabler",mood:"hopeful",victory:true,text:"Building the field IS your practice. Legacy through enabling."},
+victory_final_push:{year:5,type:"VICTORY",title:"Final Push",mood:"triumphant",victory:true,text:"One last push. The ceiling shattered."},
+victory_fought_won:{year:5,type:"VICTORY",title:"Fought and Won",mood:"triumphant",victory:true,text:"You appealed. They reversed."},
+victory_found_community:{year:5,type:"VICTORY",title:"Community Found",mood:"hopeful",victory:true,text:"Collaborators became friends. Connection achieved."},
+victory_free_forever:{year:5,type:"VICTORY",title:"Free Forever",mood:"calm",victory:true,text:"All films free. Public service art."},
+victory_full_academic:{year:5,type:"VICTORY",title:"Full Academic",mood:"calm",victory:true,text:"Academia fully embraced. Stability achieved."},
+victory_full_artist:{year:5,type:"VICTORY",title:"Full Artist",mood:"hopeful",victory:true,text:"Art world fully embraced. Freedom achieved."},
+victory_indie_scholar:{year:5,type:"VICTORY",title:"Independent Scholar",mood:"calm",victory:true,text:"No PhD. No institution. Proven through practice."},
+victory_integrity_fest:{year:5,type:"VICTORY",title:"Festival Integrity",mood:"calm",victory:true,text:"Stayed pure. Stayed artist."},
+victory_licensed_catalog:{year:5,type:"VICTORY",title:"Licensed Catalog",mood:"hopeful",victory:true,text:"Passive income from your archive."},
+victory_lofi_master:{year:5,type:"VICTORY",title:"Lo-Fi Master",mood:"hopeful",victory:true,text:"Constraint as aesthetic. Desktop cinema pioneer."},
+victory_made_home:{year:5,type:"VICTORY",title:"Made Home",mood:"calm",victory:true,text:"Bloom where you're planted. Adaptation is survival."},
+victory_negotiated_freedom:{year:5,type:"VICTORY",title:"Negotiated Freedom",mood:"triumphant",victory:true,text:"Institutional work AND personal projects. The impossible balance."},
+victory_patient_artist:{year:5,type:"VICTORY",title:"Patient Artist",mood:"calm",victory:true,text:"One film every two years. Quality always."},
+victory_personal_voice:{year:5,type:"VICTORY",title:"Personal Voice",mood:"hopeful",victory:true,text:"Vulnerability became your signature."},
+victory_phd_complete:{year:5,type:"VICTORY",title:"PhD Complete",mood:"triumphant",victory:true,text:"Dr. Video Essayist. The credential earned."},
+victory_pioneer:{year:5,type:"VICTORY",title:"The Pioneer",mood:"triumphant",victory:true,text:"You kept pushing. The field followed."},
+victory_pure_scholar:{year:5,type:"VICTORY",title:"Pure Scholar",mood:"calm",victory:true,text:"Citations over views. Different metrics."},
+victory_residency_life:{year:5,type:"VICTORY",title:"Residency Life",mood:"hopeful",victory:true,text:"Moving through the world, making work."},
+victory_safe_career:{year:5,type:"VICTORY",title:"Safe Career",mood:"calm",victory:true,text:"Conservative choices. Very sustainable."},
+victory_seasonal:{year:5,type:"VICTORY",title:"Seasonal Career",mood:"calm",victory:true,text:"Pushing and resting. Natural rhythms."},
+victory_secure_academic:{year:5,type:"VICTORY",title:"Secure Academic",mood:"calm",victory:true,text:"Job security chosen. Stability has its own creativity."},
+victory_stepped_back:{year:5,type:"VICTORY",title:"Stepped Back",mood:"calm",victory:true,text:"Less content. More life."},
+victory_streaming:{year:5,type:"VICTORY",title:"Streaming Success",mood:"hopeful",victory:true,text:"Guaranteed audience. New model."},
+victory_subversive:{year:5,type:"VICTORY",title:"Subversive Success",mood:"triumphant",victory:true,text:"Art from corporate money. Subversion as practice."},
+victory_tenure_strategic:{year:5,type:"VICTORY",title:"Tenure Strategic",mood:"hopeful",victory:true,text:"You played their game. Now you can take risks."},
+victory_tenure_won:{year:5,type:"VICTORY",title:"Tenure Won",mood:"triumphant",victory:true,text:"Public scholarship, tenured. You changed what's possible."},
+victory_theatrical:{year:5,type:"VICTORY",title:"Theatrical Champion",mood:"calm",victory:true,text:"Cinema first. Always."},
+victory_windowed:{year:5,type:"VICTORY",title:"Windowing Master",mood:"hopeful",victory:true,text:"Festivals, then streaming, then free. Maximum impact."},
+victory_quality_wins:{year:5,type:"VICTORY",title:"Quality Wins",mood:"hopeful",victory:true,text:"Your depth showed. Quality finds its audience."},
+victory_momentum:{year:5,type:"VICTORY",title:"Momentum",mood:"triumphant",victory:true,text:"Everything clicked. The breakthrough you worked for."},
+
+victory_advisor:{year:5,type:"VICTORY",title:"The Advisor",mood:"hopeful",victory:true,text:"You helped fund a generation of creators. Impact through enabling."},
+victory_aligned_partnership:{year:5,type:"VICTORY",title:"Aligned Partnership",mood:"hopeful",victory:true,text:"Brand partnership that fits. Money and integrity together."},
+victory_balanced:{year:5,type:"VICTORY",title:"The Balanced Life",mood:"calm",victory:true,text:"Part-time work. Part-time creating. Full-time human."},
+victory_balanced_commissions:{year:5,type:"VICTORY",title:"Balanced Commissions",mood:"hopeful",victory:true,text:"Institutional and personal in harmony."},
+victory_cancelled_trilogy:{year:5,type:"VICTORY",title:"Trilogy Cancelled",mood:"calm",victory:true,text:"You said no to expectations. Health over content."},
+victory_commercial:{year:5,type:"VICTORY",title:"Commercial Creator",mood:"calm",victory:true,text:"You made peace with commercial work. Stability achieved."},
+victory_diversified:{year:5,type:"VICTORY",title:"Diversified Creator",mood:"hopeful",victory:true,text:"Multiple income streams. No single point of failure."},
+victory_evolved:{year:5,type:"VICTORY",title:"Evolved Creator",mood:"hopeful",victory:true,text:"Growth means change. New fans found you."},
+victory_fresh_after_loss:{year:5,type:"VICTORY",title:"Fresh After Loss",mood:"hopeful",victory:true,text:"You started something new. Loss taught you something."},
+victory_hobby:{year:5,type:"VICTORY",title:"Hobby Creator",mood:"calm",victory:true,text:"Videos when you feel like it. It's fun again."},
+victory_integrity:{year:5,type:"VICTORY",title:"Integrity Intact",mood:"calm",victory:true,text:"You walked away from bad opportunities. Self-respect kept."},
+victory_lone_wolf:{year:5,type:"VICTORY",title:"Lone Wolf",mood:"calm",victory:true,text:"Solo forever. Uncomplicated. Free always."},
+victory_moved_forward:{year:5,type:"VICTORY",title:"Moved Forward",mood:"hopeful",victory:true,text:"The past is behind you. Forward only."},
+victory_mysterious:{year:5,type:"VICTORY",title:"The Mysterious",mood:"calm",victory:true,text:"You stayed silent. Your work spoke for itself."},
+victory_plateau:{year:5,type:"VICTORY",title:"The Plateau",mood:"calm",victory:true,text:"Same size. Same pace. There's dignity in that."},
+victory_pure_indie:{year:5,type:"VICTORY",title:"Pure Independent",mood:"calm",victory:true,text:"No patrons. No sponsors. Independence above all."},
+victory_redeemed:{year:5,type:"VICTORY",title:"Redeemed",mood:"hopeful",victory:true,text:"The sellout era is behind you. Second chances exist."},
+victory_refreshed:{year:5,type:"VICTORY",title:"Refreshed",mood:"hopeful",victory:true,text:"The sabbatical changed everything. Rest is productive."},
+victory_returned_home:{year:5,type:"VICTORY",title:"Returned Home",mood:"calm",victory:true,text:"You came back to film essays. Welcome home."},
+victory_separate_lives:{year:5,type:"VICTORY",title:"Separate Lives",mood:"calm",victory:true,text:"Two identities. One person. Functional."},
+victory_short_form:{year:5,type:"VICTORY",title:"Short Form Master",mood:"hopeful",victory:true,text:"60-second essays. The form evolved."},
+victory_small_success:{year:5,type:"VICTORY",title:"Small Success",mood:"calm",victory:true,text:"15,000 devoted subscribers. Enough."},
+victory_stood_ground:{year:5,type:"VICTORY",title:"Ground Stood",mood:"triumphant",victory:true,text:"Never compromised on creative control."},
+victory_sustainable:{year:5,type:"VICTORY",title:"Sustainable Success",mood:"calm",victory:true,text:"Not explosive. Steady. The survivors look like this."},
+victory_took_break:{year:5,type:"VICTORY",title:"Break Taken",mood:"calm",victory:true,text:"You stepped back. The world continued."},
+victory_trilogy_complete:{year:5,type:"VICTORY",title:"Trilogy Complete",mood:"triumphant",victory:true,text:"Three parts. Three years. A monument."},
+victory_true_to_niche:{year:5,type:"VICTORY",title:"True to Niche",mood:"calm",victory:true,text:"The niche shrank. You stayed."},
+victory_trusted_again:{year:5,type:"VICTORY",title:"Trusted Again",mood:"hopeful",victory:true,text:"The community healed. Trust rebuilt."},
+victory_trusted_partner:{year:5,type:"VICTORY",title:"Trusted Partner",mood:"hopeful",victory:true,text:"Creative control earned through reliability."},
+};
+
+function startGame(){
+    state={year:1,audience:0,money:5000,reputation:10,wellbeing:70,path:null,history:[]};
+    document.getElementById('title-screen').style.display='none';
+    document.getElementById('game-screen').style.display='block';
+    document.getElementById('gameover-screen').style.display='none';
+    document.getElementById('victory-screen').style.display='none';
+    updateUI();
+    showScene('start');
+}
+
+function updateUI(){
+    document.getElementById('stat-audience').textContent=state.audience.toLocaleString();
+    document.getElementById('stat-money').textContent=(state.money>=0?'$':'-$')+Math.abs(state.money).toLocaleString();
+    document.getElementById('stat-reputation').textContent=Math.max(0,Math.min(100,state.reputation));
+    document.getElementById('stat-wellbeing').textContent=Math.max(0,Math.min(100,state.wellbeing));
+    
+    document.getElementById('bar-audience').style.width=Math.min(100,(state.audience/100000)*100)+'%';
+    document.getElementById('bar-money').style.width=Math.min(100,Math.max(0,((state.money+10000)/60000)*100))+'%';
+    document.getElementById('bar-reputation').style.width=Math.max(0,Math.min(100,state.reputation))+'%';
+    document.getElementById('bar-wellbeing').style.width=Math.max(0,Math.min(100,state.wellbeing))+'%';
+    
+    // Danger indicators
+    ['audience','money','reputation','wellbeing'].forEach(stat=>{
+        const box=document.getElementById('stat-box-'+stat);
+        box.classList.remove('danger');
+        if(stat==='money'&&state.money<=-5000)box.classList.add('danger');
+        if(stat==='wellbeing'&&state.wellbeing<=20)box.classList.add('danger');
+        if(stat==='reputation'&&state.reputation<=5)box.classList.add('danger');
+    });
+    
+    document.getElementById('current-year').textContent=state.year;
+    for(let i=1;i<=5;i++){
+        const dot=document.getElementById('y'+i);
+        const conn=document.getElementById('c'+i);
+        dot.className='year-dot';
+        if(i<state.year){dot.classList.add('completed');if(conn)conn.classList.add('completed')}
+        else if(i===state.year)dot.classList.add('current');
+    }
+}
+
+function showScene(sceneId){
+    const scene=scenes[sceneId];
+    if(!scene){console.error('Scene not found:',sceneId);return}
+    
+    if(scene.pathSet)state.path=scene.pathSet;
+    if(scene.year)state.year=scene.year;
+    
+    const container=document.getElementById('scene-container');
+    
+    // Visual element
+    let visualHTML='';
+    if(scene.mood){
+        visualHTML='<div class="scene-visual" id="scene-visual"></div>';
+    }
+    
+    let pathBadge='';
+    if(state.path){
+        pathBadge=`<span class="path-badge ${state.path}">${state.path.charAt(0).toUpperCase()+state.path.slice(1)}</span>`;
+    }
+    
+    let choicesHTML='';
+    if(scene.choices){
+        choicesHTML='<div class="choices">';
+        scene.choices.forEach((choice,i)=>{
+            const crossoverClass=choice.tag?'crossover':'';
+            const tagHTML=choice.tag?`<span class="choice-tag">${choice.tag}</span>`:'';
+            choicesHTML+=`<button class="choice-btn ${crossoverClass}" onclick="makeChoice('${sceneId}',${i})">
+                <span class="choice-label">${choice.label}${tagHTML}</span>
+                <span class="choice-desc">${choice.desc}</span>
+            </button>`;
+        });
+        choicesHTML+='</div>';
+    }
+    
+    const cardClass=state.path||'';
+    container.innerHTML=`
+        ${visualHTML}
+        <div class="scene-card ${cardClass}">
+            <div class="scene-header">
+                <span class="scene-type">${scene.type}</span>
+                ${pathBadge}
+            </div>
+            <h2 class="scene-title">${scene.title}</h2>
+            <div class="scene-text">${scene.text}</div>
+            ${choicesHTML}
+            <div style="margin-top:1.5rem;padding-top:1rem;border-top:1px solid var(--border-subtle);text-align:center">
+                <button onclick="startGame()" style="font-family:'JetBrains Mono',monospace;font-size:0.7rem;padding:0.4rem 0.8rem;border:1px solid var(--border-subtle);background:transparent;color:var(--text-secondary);cursor:pointer;text-transform:uppercase;letter-spacing:0.05em;opacity:0.6;transition:opacity 0.3s" onmouseover="this.style.opacity=1" onmouseout="this.style.opacity=0.6">↻ Start Over</button>
+            </div>
+        </div>`;
+    
+    // Draw mood visual
+    if(scene.mood){
+        const visualContainer=document.getElementById('scene-visual');
+        if(visualContainer)drawMoodCanvas(visualContainer,scene.mood);
+    }
+    
+    updateUI();
+    
+    if(scene.gameOver)setTimeout(()=>showGameOver(scene.reason),1500);
+    if(scene.victory)setTimeout(()=>showVictory(),1500);
+}
+
+function makeChoice(sceneId,choiceIndex){
+    const scene=scenes[sceneId];
+    const choice=scene.choices[choiceIndex];
+    
+    if(choice.effects){
+        state.audience+=choice.effects.audience||0;
+        state.money+=choice.effects.money||0;
+        state.reputation+=choice.effects.reputation||0;
+        state.wellbeing+=choice.effects.wellbeing||0;
+        
+        state.audience=Math.max(0,state.audience);
+        state.reputation=Math.max(0,Math.min(100,state.reputation));
+        state.wellbeing=Math.max(0,Math.min(100,state.wellbeing));
+        
+        showOutcome(choice.effects);
+        
+        // Trigger glitch on negative effects
+        const net=(choice.effects.audience||0)/1000+(choice.effects.money||0)/1000+(choice.effects.reputation||0)+(choice.effects.wellbeing||0);
+        if(net<-10)triggerGlitch();
+    }
+    
+    state.history.push({scene:sceneId,choice:choiceIndex});
+    
+    // Check fail conditions
+    if(state.money<=FAIL.money){
+        setTimeout(()=>showGameOver('money'),800);return;
+    }
+    if(state.wellbeing<=FAIL.wellbeing){
+        setTimeout(()=>showGameOver('burnout'),800);return;
+    }
+    if(state.reputation<=FAIL.reputation&&state.year>1){
+        setTimeout(()=>showGameOver('reputation'),800);return;
+    }
+    
+    setTimeout(()=>showScene(choice.next),600);
+}
+
+function showOutcome(effects){
+    const toast=document.getElementById('outcome-toast');
+    let html='';
+    const net=(effects.audience||0)/1000+(effects.money||0)/1000+(effects.reputation||0)+(effects.wellbeing||0);
+    
+    if(effects.audience)html+=`<span class="stat-change ${effects.audience>=0?'positive':'negative'}">${effects.audience>=0?'+':''}${effects.audience.toLocaleString()} aud</span>`;
+    if(effects.money)html+=`<span class="stat-change ${effects.money>=0?'positive':'negative'}">${effects.money>=0?'+$':'-$'}${Math.abs(effects.money).toLocaleString()}</span>`;
+    if(effects.reputation)html+=`<span class="stat-change ${effects.reputation>=0?'positive':'negative'}">${effects.reputation>=0?'+':''}${effects.reputation} rep</span>`;
+    if(effects.wellbeing)html+=`<span class="stat-change ${effects.wellbeing>=0?'positive':'negative'}">${effects.wellbeing>=0?'+':''}${effects.wellbeing} well</span>`;
+    
+    toast.innerHTML=html;
+    toast.className='outcome-toast show '+(net>=0?'positive':'negative');
+    setTimeout(()=>{toast.classList.remove('show')},2500);
+}
+
+function showGameOver(reason){
+    document.getElementById('game-screen').style.display='none';
+    document.getElementById('gameover-screen').style.display='block';
+    
+    const reasons={
+        burnout:{title:"Complete Burnout",desc:"Your wellbeing collapsed. Your body forced you to stop. Recovery will take years."},
+        money:{title:"Financial Collapse",desc:"Bankruptcy proceedings begin. Your equipment will be sold. Five years of work, erased by debt."},
+        reputation:{title:"Reputation Destroyed",desc:"Your name is mud. The community moved on. No one wants to work with you anymore."},
+        legal:{title:"Legal Destruction",desc:"The lawsuit destroyed everything. Legal fees consumed your savings. Your channel is gone."},
+        quit:{title:"The Quiet Exit",desc:"You stopped uploading. No announcement. Just silence. Life moved on."}
+    };
+    
+    const r=reasons[reason]||reasons.burnout;
+    const container=document.getElementById('gameover-container');
+    
+    container.innerHTML=`
+        <div class="result-card gameover">
+            <div class="result-type gameover">Game Over · Year ${state.year}</div>
+            <h2 class="result-title gameover">${r.title}</h2>
+            <p class="result-desc">${r.desc}</p>
+        </div>
+        <div class="final-scores">
+            <div class="final-scores-title">Final Statistics</div>
+            ${generateScoreRows()}
+        </div>
+        <div style="text-align:center;margin-top:1.5rem">
+            <button class="btn" onclick="startGame()">Try Again</button>
+        </div>`;
+}
+
+function showVictory(){
+    state.year=5;
+    document.getElementById('game-screen').style.display='none';
+    document.getElementById('victory-screen').style.display='block';
+    
+    // More nuanced grading
+    const audienceScore=Math.min(30,state.audience/3000);
+    const moneyScore=Math.min(25,state.money/2000);
+    const repScore=Math.min(25,state.reputation/4);
+    const wellScore=Math.min(20,state.wellbeing/5);
+    const totalScore=Math.round(audienceScore+moneyScore+repScore+wellScore);
+    
+    let grade,gradeDesc;
+    if(totalScore>=90){grade='A+';gradeDesc='Exceptional—against all odds, you thrived'}
+    else if(totalScore>=80){grade='A';gradeDesc='Outstanding—a model sustainable career'}
+    else if(totalScore>=70){grade='B+';gradeDesc='Very good—real success with real tradeoffs'}
+    else if(totalScore>=60){grade='B';gradeDesc='Good—you made it work, mostly'}
+    else if(totalScore>=50){grade='C+';gradeDesc='Decent—survival is its own victory'}
+    else if(totalScore>=40){grade='C';gradeDesc='Passing—you made it, barely'}
+    else{grade='D';gradeDesc='Survived—but at what cost?'}
+    
+    const container=document.getElementById('victory-container');
+    container.innerHTML=`
+        <div class="result-card victory">
+            <div class="result-type victory">🎬 Five Years Complete</div>
+            <h2 class="result-title">You Made It</h2>
+            <p class="result-desc">Against the odds, through precarity and doubt, you built something that lasted five years. Most who try this path don't make it this far.</p>
+        </div>
+        <div class="final-scores">
+            <div class="final-scores-title">Your Five-Year Journey</div>
+            ${generateScoreRows()}
+            <div class="final-grade">
+                <div class="grade-label">Overall Assessment</div>
+                <div class="grade-value">${grade}</div>
+                <div class="grade-desc">${gradeDesc}</div>
+            </div>
+        </div>
+        <div style="text-align:center;margin-top:1.5rem">
+            <button class="btn" onclick="startGame()">Play Again</button>
+        </div>`;
+}
+
+function generateScoreRows(){
+    return `
+        <div class="score-row">
+            <div class="score-icon audience">👥</div>
+            <div class="score-details">
+                <div class="score-header">
+                    <span class="score-name">Audience</span>
+                    <span class="score-value audience">${state.audience.toLocaleString()}</span>
+                </div>
+                <div class="score-context">${getAudienceContext(state.audience)}</div>
+                <div class="score-bar"><div class="score-fill audience" style="width:${Math.min(100,(state.audience/100000)*100)}%"></div></div>
+            </div>
+        </div>
+        <div class="score-row">
+            <div class="score-icon money">💰</div>
+            <div class="score-details">
+                <div class="score-header">
+                    <span class="score-name">Savings</span>
+                    <span class="score-value money">${(state.money>=0?'$':'-$')+Math.abs(state.money).toLocaleString()}</span>
+                </div>
+                <div class="score-context">${getMoneyContext(state.money)}</div>
+                <div class="score-bar"><div class="score-fill money" style="width:${Math.min(100,Math.max(0,((state.money+10000)/60000)*100))}%"></div></div>
+            </div>
+        </div>
+        <div class="score-row">
+            <div class="score-icon reputation">⭐</div>
+            <div class="score-details">
+                <div class="score-header">
+                    <span class="score-name">Reputation</span>
+                    <span class="score-value reputation">${state.reputation}/100</span>
+                </div>
+                <div class="score-context">${getReputationContext(state.reputation)}</div>
+                <div class="score-bar"><div class="score-fill reputation" style="width:${state.reputation}%"></div></div>
+            </div>
+        </div>
+        <div class="score-row">
+            <div class="score-icon wellbeing">❤️</div>
+            <div class="score-details">
+                <div class="score-header">
+                    <span class="score-name">Wellbeing</span>
+                    <span class="score-value wellbeing">${state.wellbeing}/100</span>
+                </div>
+                <div class="score-context">${getWellbeingContext(state.wellbeing)}</div>
+                <div class="score-bar"><div class="score-fill wellbeing" style="width:${state.wellbeing}%"></div></div>
+            </div>
+        </div>`;
+}
+
+function getAudienceContext(a){
+    if(a>=80000)return'Major creator—top 0.1% of video essayists';
+    if(a>=40000)return'Established creator—significant influence';
+    if(a>=20000)return'Growing creator—real momentum';
+    if(a>=10000)return'Niche success—dedicated community';
+    if(a>=5000)return'Small but real—finding your voice';
+    if(a>=1000)return'Starting out—still building';
+    return'Minimal reach—the algorithm never found you';
+}
+
+function getMoneyContext(m){
+    if(m>=30000)return'Thriving—real financial security';
+    if(m>=15000)return'Comfortable—solid savings';
+    if(m>=5000)return'Stable—some cushion';
+    if(m>=0)return'Getting by—month to month';
+    if(m>=-3000)return'Struggling—minor debt';
+    return'Crisis—serious financial trouble';
+}
+
+function getReputationContext(r){
+    if(r>=80)return'Field leader—widely respected and cited';
+    if(r>=60)return'Well-established—strong credibility';
+    if(r>=40)return'Recognized—peers know your work';
+    if(r>=20)return'Building—some recognition';
+    if(r>=10)return'Unknown—still proving yourself';
+    return'Damaged—reputation suffered';
+}
+
+function getWellbeingContext(w){
+    if(w>=80)return'Thriving—sustainable and healthy';
+    if(w>=60)return'Good—manageable stress';
+    if(w>=40)return'Okay—some strain showing';
+    if(w>=25)return'Struggling—burnout risk';
+    return'Critical—serious health concerns';
+}
+</script>
+</body>
+</html>
